@@ -52,7 +52,7 @@ func GetWSCRe(combDn, combKv, combPf, combFk bool) *regexp.Regexp {
 // Vowel combinations prone to synizesis.
 var SynizesisVowelsRe = "(?i)^([αάa][ηhιϊi]|[εe][ϊ]|[εe][ιi](?:[αάaοόoωώw]|[οo][υύuy])|[ιi](?:[αάaεέeοόoωώw]|[αa][ιίi]|[οo][ιίiυύuy])|[οόo](?:[ιiϊ]|[εe][ιi])|[οo][ιi](?:[αάaεέeοόoωώw]|[οo][ιίiυύuy])|[υuy][αάaιiοόoωώw])$"
 
-var customRegexpsMap = map[string]string{ // todo(low) : test the rows of this map.
+var customRegexpsMap = map[string]string{ // todo: Test map records.
 	"(.*)":                          "(.*)",
 	"(.+)":                          "(.+)",
 	"^":                             "^",
@@ -163,7 +163,7 @@ var customRegexpsMap = map[string]string{ // todo(low) : test the rows of this m
 	"(νν)":                          "([νn][νn])",
 	"(ντ)":                          "([νn][τt]|[νn]?d)",
 	"(ντ|σμ)":                       "([νn][τt]|d|[σs][μm])",
-	"(ξ)":                           "(k[σs]|κs|[ξx3])", // todo: explain why not 'κσ' ("εξ-τριμ cases").
+	"(ξ)":                           "(k[σs]|κs|[ξx3])", // todo: Explain why no 'κσ' ("εξ-τριμ cases").
 	"(ο)":                           "([οo])",
 	"(ό)":                           "(ό)",
 	"(ο|ό)":                         "([οόo])",
@@ -267,11 +267,11 @@ func customRegexpCompile(grhyphRegexps []string) *regexp.Regexp {
 		} else {
 			canonRegexp = append(canonRegexp, grhyphRegexp...)
 			// debug
-			fmt.Println("warning: custom regexp not included in map", grhyphRegexp) // todo: return error.
+			fmt.Println("warning: custom regexp not included in map", grhyphRegexp) // todo: Error.
 		}
 	}
 
-	return regexp.MustCompile(string(canonRegexp[:])) // todo: return error instead of panic.
+	return regexp.MustCompile(string(canonRegexp[:])) // todo: Error instead of panic.
 }
 
 // This list catalogs whole words, or parts of words, for which synizesis is most likely to occur.
