@@ -7105,9 +7105,5 @@ var GrhyphRules = []GrhyphRule{
 	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?lq=πιασ&dq=
 	// todo: πιάνω
 
-	//todo: test arguments count with queries
-	//todo: test replacements number sequence (the rules are dynamic either anyway)
-	//todo: test >< placements, multiple occurences etc.
-
 	// ...
 }
