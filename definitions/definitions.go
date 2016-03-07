@@ -7070,12 +7070,28 @@ var GrhyphRules = []GrhyphRule{
 	GrhyphRule{customRegexpCompile(
 		[]string{"(.*)", "(ι)", "(ζ|σ)", "(ρ)", "(α)", "(ι|ί)", "(λ)", "(.*)"}), "$1$2$3$4$5>-<$6$7$8"},
 
+	// Ιταλι-α
+	GrhyphRule{customRegexpCompile(
+		[]string{"^", "(ι)", "(τ)", "(α)", "(λ)", "(ι)", "(α)", "$"}), "$1-$2$3-$4$5-$6"},
+
 	// Ιταλιάνα
 	GrhyphRule{customRegexpCompile(
 		[]string{"(.*)", "(ι)", "(τ)", "(α)", "(λ)", "(ι)", "(α|ά)", "(.*)"}), "$1$2$3$4$5$6><$7$8"},
 	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?lq=*ιταλιαν*&dq=
 
-	// ...
+	// Ιταλιώτης
+	GrhyphRule{customRegexpCompile(
+		[]string{"(.*)", "(ι)", "(τ)", "(α)", "(λ)", "(ι)", "(ω|ώ)", "(.*)"}), "$1$2$3$4$5$6><$7$8"},
+	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?lq=*ιταλιω*&dq=
+
+	// ιτιά
+	GrhyphRule{customRegexpCompile(
+		[]string{"(ι)", "(τ)", "(ι)", "(.*)"}), "$1-$2$3<$4"},
+	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?lq=ιτι*&dq=
+
+	// Ιωήλ (Io-il)
+	GrhyphRule{customRegexpCompile(
+		[]string{"^", "(ι)", "(ο)", "(ι|ί)", "(λ)", "$"}), "$1-$2-$3$4"},
 
 	// ισοπαλία (ισοπαλι-α)
 	GrhyphRule{customRegexpCompile(
