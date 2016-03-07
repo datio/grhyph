@@ -13,21 +13,23 @@ var NuTauRe = "(?i)^([νn])([τt])$"
 
 // Valid Greek word starting consontants.
 // Important: Verify the getWSCRe()'s conditions when altering.
-var WordStartConsonantsRe = "(?i)^([βvb](?:[τt]h|[δdγgλlρr])|[γg](?:[τt]h|[δdκkλlνnρr])|(?:[τt]h|[δd])[νn]|(?:[τt]h|[δd])[ρr]|(?:[τt]h|[θ8])[λlνnρr]|[κk][βvb]|[κk][λlνnρrτtj]|[μm][νnπp]|[νn][τtj][^h]|[πp][λlνnρrτtj]|[πp][φf]|[σs](?:[τt][^h]|[θ8βvbγgκkλlμmνnπpφfχxh])|[τt][ζzμmρrσs]|[φf](?:[τt]h?|[θ8λlρrχxh]|ch)|[φf][κk]|(?:[χxh]|ch)(?:[θ8λlνnρr]|[τt]h?))"
+const WordStartConsonantsRe = "(?i)^([βvb](?:[τt]h|[δdγgλlρr])|[γg](?:[τt]h|[δdκkλlνnρr])|(?:[τt]h|[δd])[νn]|(?:[τt]h|[δd])[ρr]|(?:[τt]h|[θ8])[λlνnρr]|[κk][βvb]|[κk][λlνnρrτtj]|[μm][νnπp]|[νn][τtj][^h]|[πp][λlνnρrτtj]|[πp][φf]|[σs](?:[τt][^h]|[θ8βvbγgκkλlμmνnπpφfχxh])|[τt][ζzμmρrσs]|[φf](?:[τt]h?|[θ8λlρrχxh]|ch)|[φf][κk]|(?:[χxh]|ch)(?:[θ8λlνnρr]|[τt]h?))"
 
-var WSCReMap = map[string]*regexp.Regexp{}
+type WSCReMapKey struct {
+	CombineConsonantsDn bool
+	CombineConsonantsKv bool
+	CombineConsonantsPf bool
+	CombineConsonantsFk bool
+}
+
+var WSCReMap = map[*WSCReMapKey]*regexp.Regexp{}
 
 // Get a WordStartConsonantsRe based on the combination options.
 func GetWSCRe(combDn, combKv, combPf, combFk bool) *regexp.Regexp {
-	// todo: Use an interface{}, instead of the following custom string, as a key for the WSCReMap.
-	customKey := fmt.Sprintf("%s%s%s%s",
-		fmt.Sprint(combDn)[0:1],
-		fmt.Sprint(combKv)[0:1],
-		fmt.Sprint(combPf)[0:1],
-		fmt.Sprint(combFk)[0:1])
+	mapKey := &WSCReMapKey{combDn, combKv, combPf, combFk}
 
-	if _, ok := WSCReMap[customKey]; ok {
-		return WSCReMap[customKey]
+	if _, ok := WSCReMap[mapKey]; ok {
+		return WSCReMap[mapKey]
 	} else {
 		wSCRe := WordStartConsonantsRe
 
@@ -44,8 +46,8 @@ func GetWSCRe(combDn, combKv, combPf, combFk bool) *regexp.Regexp {
 			wSCRe = strings.Replace(wSCRe, "|[φf][κk]", "", 1)
 		}
 
-		WSCReMap[customKey] = regexp.MustCompile(wSCRe)
-		return WSCReMap[customKey]
+		WSCReMap[mapKey] = regexp.MustCompile(wSCRe)
+		return WSCReMap[mapKey]
 	}
 }
 

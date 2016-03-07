@@ -10,8 +10,8 @@ type hyphenationTest struct {
 }
 
 func TestPlain(t *testing.T) {
-
 	hyphenationOptions := GetDefaultOptions()
+
 	hyphenationOptions.Seperator = "-"
 
 	h := Hyphenation{
@@ -98,7 +98,7 @@ func TestRules(t *testing.T) {
 		{"αουτσαιντερ", "α-ου-τσα-ι-ντερ"},
 		{"αραχνοΰφαντος", "α-ρα-χνο-ΰ-φα-ντος"},
 		{"αραχνούφαντος", "α-ρα-χνο-ύ-φα-ντος"},
-		{"aidiniwtis", "a-i-di-ni-w-tis"},
+		{"aidiniwtis", "a-i-di-niw-tis"},
 	}
 
 	for _, test := range tests {
