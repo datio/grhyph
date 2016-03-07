@@ -7086,7 +7086,7 @@ var GrhyphRules = []GrhyphRule{
 
 	// ιτιά
 	GrhyphRule{customRegexpCompile(
-		[]string{"(ι)", "(τ)", "(ι)", "(.*)"}), "$1-$2$3<$4"},
+		[]string{"^", "(ι)", "(τ)", "(ι)", "(α|ά|ε|έ|ω|ώ)", "(.*)"}), "$1-$2$3<$4$5"},
 	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?lq=ιτι*&dq=
 
 	// Ιωήλ (Io-il)
