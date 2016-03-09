@@ -282,9 +282,9 @@ func regexpReplace(ss []SpeechSound, o Options, wSCRe *regexp.Regexp) string {
 	joinedSpeechSounds := speechSoundJoin(ss)
 
 	if CachingEnabled {
-		ck := CacheKey{joinedSpeechSounds, o}
+		cacheKey := CacheKey{joinedSpeechSounds, o}
 
-		if hyphenatedString, ok := Cache[ck]; ok {
+		if hyphenatedString, ok := Cache[cacheKey]; ok {
 			return hyphenatedString
 		}
 	}
@@ -321,7 +321,7 @@ func regexpReplace(ss []SpeechSound, o Options, wSCRe *regexp.Regexp) string {
 			hyphenedMiddle := rule.CompiledCustomRe.ReplaceAllString(joinedSpeechSounds, string(middleRunes[:]))
 
 			// Debug:
-			fmt.Println(rule)
+			// fmt.Println(rule)
 			// todo: return pre-compiled rule, maybe with a record of the line it exists at.
 
 			return toHyphenateLeft + hyphenedMiddle + toHyphenateRight
@@ -331,10 +331,10 @@ func regexpReplace(ss []SpeechSound, o Options, wSCRe *regexp.Regexp) string {
 	hyphened, _ := plainHyphenation(ss, o, wSCRe)
 
 	if CachingEnabled {
-		ck := CacheKey{HyphenationInput: joinedSpeechSounds, HyphenationOptions: o}
+		cacheKey := CacheKey{HyphenationInput: joinedSpeechSounds, HyphenationOptions: o}
 
-		if _, ok := Cache[ck]; !ok {
-			Cache[ck] = hyphened
+		if _, ok := Cache[cacheKey]; !ok {
+			Cache[cacheKey] = hyphened
 		}
 	}
 
