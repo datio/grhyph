@@ -321,7 +321,7 @@ func regexpReplace(ss []SpeechSound, o Options, wSCRe *regexp.Regexp) string {
 			hyphenedMiddle := rule.CompiledCustomRe.ReplaceAllString(joinedSpeechSounds, string(middleRunes[:]))
 
 			// Debug:
-			// fmt.Println(rule)
+			fmt.Println(rule)
 			// todo: return pre-compiled rule, maybe with a record of the line it exists at.
 
 			return toHyphenateLeft + hyphenedMiddle + toHyphenateRight

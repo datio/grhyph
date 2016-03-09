@@ -198,7 +198,8 @@ func BenchmarkPlain(b *testing.B) {
 		}
 
 		if hyphenedText != "πα-λι-ό-πα-λι-ο-pa-li-o" {
-			b.Errorf("(%s) Hyphenated value does not match: expected %s, got %s", "παλιόπαλιοpalio", "πα-λι-ό-πα-λι-ο-pa-li-o", hyphenedText)
+			b.Errorf("(%s) Hyphenated value does not match: expected %s, got %s", "παλιόπαλιοpalio",
+				"πα-λι-ό-πα-λι-ο-pa-li-o", hyphenedText)
 		}
 	}
 }
@@ -222,7 +223,8 @@ func BenchmarkQuickSynizesis(b *testing.B) {
 		}
 
 		if hyphenedText != "πα-λιό-πα-λιο-pa-lio" {
-			b.Errorf("(%s) Hyphenated value does not match: expected %s, got %s", "παλιόπαλιοpalio", "πα-λιό-πα-λιο-pa-lio", hyphenedText)
+			b.Errorf("(%s) Hyphenated value does not match: expected %s, got %s", "παλιόπαλιοpalio", "πα-λιό-πα-λιο-pa-lio",
+				hyphenedText)
 		}
 	}
 }
@@ -248,7 +250,8 @@ func BenchmarkRules(b *testing.B) {
 		}
 
 		if hyphenedText != "πα-λιό-πα-λιο-pa-lio" {
-			b.Errorf("(%s) Hyphenated value does not match: expected %s, got %s", "παλιόπαλιοpalio", "πα-λιό-πα-λιο-pa-lio", hyphenedText)
+			b.Errorf("(%s) Hyphenated value does not match: expected %s, got %s", "παλιόπαλιοpalio", "πα-λιό-πα-λιο-pa-lio",
+				hyphenedText)
 		}
 	}
 }
@@ -274,7 +277,8 @@ func BenchmarkRulesNoCache(b *testing.B) {
 		}
 
 		if hyphenedText != "πα-λιό-πα-λιο-pa-lio" {
-			b.Errorf("(%s) Hyphenated value does not match: expected %s, got %s", "παλιόπαλιοpalio", "πα-λιό-πα-λιο-pa-lio", hyphenedText)
+			b.Errorf("(%s) Hyphenated value does not match: expected %s, got %s", "παλιόπαλιοpalio", "πα-λιό-πα-λιο-pa-lio",
+				hyphenedText)
 		}
 	}
 }

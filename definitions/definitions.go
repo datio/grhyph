@@ -269,7 +269,7 @@ func customRegexpCompile(grhyphRegexps []string) *regexp.Regexp {
 		} else {
 			canonRegexp = append(canonRegexp, grhyphRegexp...)
 			// debug
-			fmt.Println("warning: custom regexp not included in map", grhyphRegexp) // todo: Error.
+			fmt.Println("warning: custom regexp not found in map", grhyphRegexp) // todo: Error.
 		}
 	}
 
@@ -277,8 +277,7 @@ func customRegexpCompile(grhyphRegexps []string) *regexp.Regexp {
 }
 
 // This list catalogs whole words, or parts of words, for which synizesis is most likely to occur.
-// Rules to seperate vowels may also exist, useful for words that miss accents/diacritics or are
-// written in Greeklish.
+// Rules to seperate vowels may also exist, useful for words where accents/diacritics are missing (e.g. Greeklish).
 var GrhyphRules = []GrhyphRule{
 	// GrhyphRule{customRegexpCompile([]string{}), ""},
 
@@ -6763,7 +6762,8 @@ var GrhyphRules = []GrhyphRule{
 
 	// θειαφιστήρια
 	GrhyphRule{customRegexpCompile(
-		[]string{"(.*)", "(ι)", "(στ)", "(η|ή)", "(ρ)", "(ι)", "(α|ά|ω|ώ)", "(.*)"}), "$1$2$3$4$5$6><$7$8"},
+		[]string{"(.*)", "(α)", "(φ)", "(ι)", "(στ)", "(η|ή)", "(ρ)", "(ι)", "(α|ά|ω|ώ)", "(.*)"}),
+		"$1$2$3$4$5$6$7$8><$9$10"},
 	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?lq=*αφιστήρι*&dq=
 
 	// θειαφίζω
@@ -7094,6 +7094,64 @@ var GrhyphRules = []GrhyphRule{
 	// Ιωήλ (Io-il)
 	GrhyphRule{customRegexpCompile(
 		[]string{"^", "(ι)", "(ο)", "(ι|ί)", "(λ)", "$"}), "$1-$2-$3$4"},
+
+	// καβάκι
+	GrhyphRule{customRegexpCompile(
+		[]string{"(.*)", "(κ)", "(α)", "(β)", "(α|ά)", "(κ)", "(ι)", "(α|ά|ω|ώ)", "(.*)"}), "$1$2$3$4$5$6$7><$8$9"},
+	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?lq=*καβακι*&dq=
+
+	// καβαλιέρος
+	GrhyphRule{customRegexpCompile(
+		[]string{"(.*)", "(κ)", "(α)", "(β)", "(α)", "(λ)", "(ι)", "(α|ά|ε|έ|ω|ώ)", "(.*)"}), "$1$2$3$4$5$6$7><$8$9"},
+	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?start=10&lq=*καβαλι*&dq=
+
+	// καβο-Μαλιάς
+	GrhyphRule{customRegexpCompile(
+		[]string{"^", "(μ)", "(α)", "(λ)", "(ι)", "(α|ά|ω|ώ)", "(.*)"}), "$1$2$3$4><$5$6"},
+	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?start=10&lq=μαλι*&dq=
+
+	// καβούκι
+	GrhyphRule{customRegexpCompile(
+		[]string{"(.*)", "(κ)", "(α)", "(β)", "(ου|ού)", "(κ)", "(ι)", "(α|ά|ω|ώ)", "(.*)"}), "$1$2$3$4$5$6$7><$8$9"},
+	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?lq=*καβουκι*&dq=
+
+	// καβουρδιστήρι, καβουρντιστήρι
+	GrhyphRule{customRegexpCompile(
+		[]string{"(.*)", "(ρ)", "(δ|ντ)", "(ι)", "(στ)", "(η|ή)", "(ρ)", "(ι)", "(α|ά|ω|ώ)", "(.*)"}),
+		"$1$2$3$4$5$6$7$8><$9$10"},
+	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?lq=*ουρδιστήρι*&dq=
+
+	// καβούρι
+	GrhyphRule{customRegexpCompile(
+		[]string{"(.*)", "(α)", "(β)", "(ου|ού)", "(ρ)", "(ι)", "(α|ά|ε|έ|ω|ώ)", "(.*)"}), "$1$2$3$4$5$6><$7$8"},
+	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?lq=*αβούρια*&dq=
+
+	// καγιάκ
+	GrhyphRule{customRegexpCompile(
+		[]string{"(.*)", "(α)", "(γ)", "(ι)", "(α|ά)", "(κ)", "(.*)"}), "$1$2$3$4><$5$6$7"},
+	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?lq=*αγιάκ*&dq=
+
+	// καγιανάς
+	GrhyphRule{customRegexpCompile(
+		[]string{"(.*)", "(κ)", "(α)", "(γ)", "(ι)", "(α|ά)", "(ν)", "(.*)"}), "$1$2$3$4$5><$6$7$8"},
+	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?lq=*καγιαν*&dq=
+
+	// καδί
+	GrhyphRule{customRegexpCompile(
+		[]string{"(.*)", "(κ)", "(α)", "(δ)", "(ι)", "(α|ά|ω|ώ)", "(.*)"}), "$1$2$3$4$5><$6$7"},
+	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?lq=καδι*&dq=
+
+	// καδρίλια
+	GrhyphRule{customRegexpCompile(
+		[]string{"(.*)", "(α)", "(δ)", "(ρ)", "(ι|ί)", "(λ)", "(ι)", "(α|ά|ε|έ|ω|ώ)", "(.*)"}), "$1$2$3$4$5$6$7><$8$9"},
+	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?lq=*αδριλι*&dq=
+
+	// καδρόνι
+	GrhyphRule{customRegexpCompile(
+		[]string{"(.*)", "(α)", "(δ)", "(ρ)", "(ο|ό)", "(ν)", "(ι)", "(α|ά|ε|έ|ω|ώ)", "(.*)"}), "$1$2$3$4$5$6$7><$8$9"},
+	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?lq=*αδρόνι*&dq=
+
+	// ...
 
 	// ισοπαλία (ισοπαλι-α)
 	GrhyphRule{customRegexpCompile(
