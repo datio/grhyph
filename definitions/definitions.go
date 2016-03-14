@@ -7268,8 +7268,64 @@ var GrhyphRules = []GrhyphRule{
 		[]string{"(.*)", "(κ)", "(α)", "(κ)", "(α|ά)", "(δ)", "(ι)", "(α|ά|ε|έ|ω|ώ)", "(.*)"}), "$1$2$3$4$5$6$7><$8$9"},
 	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?lq=*κακάδι*&dq=
 
-	// κάκιωμα, κακιώνω
-	//
+	// κάκιωμα
+	GrhyphRule{customRegexpCompile(
+		[]string{"(.*)", "(κ)", "(α|ά)", "(κ)", "(ι)", "(ω|ώ)", "(μ)", "(.*)"}), "$1$2$3$4$5><$6$7$8"},
+	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?lq=*κάκιωμ*&dq=
+
+	// κακιώνω
+	GrhyphRule{customRegexpCompile(
+		[]string{"(.*)", "(κ)", "(α)", "(κ)", "(ι)", "(ω|ώ)", "(ώ-νω)", "$"}), "$1$2$3$4$5><$6$7"},
+	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?lq=*κακιώνω&dq=
+
+	// κακογλωσσιά
+	GrhyphRule{customRegexpCompile(
+		[]string{"(.*)", "(κ)", "(α)", "(κ)", "(ο)", "(γ)", "(λ)", "(ω)", "(σσ|σ)", "(ι)", "(α|ά|ε|έ|ω|ώ)", "(.*)"}),
+		"$1$2$3$4$5$6$7$8$9$10><$11$12"},
+
+	// κακογνωμιά
+	GrhyphRule{customRegexpCompile(
+		[]string{"(.*)", "(κ)", "(α)", "(κ)", "(ο)", "(γ)", "(ν)", "(ω)", "(μ)", "(ι)", "(α|ά|ε|έ|ω|ώ)", "(.*)"}),
+		"$1$2$3$4$5$6$7$8$9$10><$11$12"},
+
+	// κακογουστιά
+	GrhyphRule{customRegexpCompile(
+		[]string{"(.*)", "(κ)", "(α)", "(κ)", "(ο)", "(γ)", "(ου)", "(στ)", "(ι)", "(α|ά|ε|έ|ω|ώ)", "(.*)"}),
+		"$1$2$3$4$5$6$7$8$9><$10$11"},
+	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?lq=*ογουστι*&dq=
+
+	// κακοζωισμένος (kakozo-ismenos)
+	GrhyphRule{customRegexpCompile(
+		[]string{"(.*)", "(ζ)", "(ο)", "(ι)", "(σ)", "(μ)", "(.*)"}), "$1$2$3>-<$4$5$6$7"},
+
+	// κακοήθεια (kako-itheia)
+	GrhyphRule{customRegexpCompile(
+		[]string{"(.*)", "(κ)", "(α)", "(κ)", "(ο)", "(ι|ί)", "(θ)", "(.*)"}), "$1$2$3$4$5>-<$6$7$8"},
+
+	// κακόηχα
+	GrhyphRule{customRegexpCompile(
+		[]string{"(.*)", "(κ)", "(α)", "(κ)", "(ο)", "(ι)", "(χ)", "(.*)"}), "$1$2$3$4$5>-<$6$7$8"},
+
+	// κακοθανατιά
+	GrhyphRule{customRegexpCompile(
+		[]string{"(.*)", "(κ)", "(ο)", "(θ)", "(α)", "(ν)", "(α)", "(τ)", "(ι)", "(α|ά|ε|έ|ω|ώ)", "(.*)"}),
+		"$1$2$3$4$5$6$7$8$9><$10$11"},
+	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?lq=*θανατι*&dq=
+
+	// κακοκαιριά
+	GrhyphRule{customRegexpCompile(
+		[]string{"(.*)", "(κ)", "(ο)", "(κ)", "(αι|αί|ε|έ)", "(ρ)", "(ι)", "(α|ά|ε|έ|ω|ώ)", "(.*)"}),
+		"$1$2$3$4$5$6$7><$8$9"},
+	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?start=30&lq=*οκαιρ*&dq=
+
+	// κακοκεφιά
+	GrhyphRule{customRegexpCompile(
+		[]string{"(.*)", "(ο)", "(κ)", "(ε)", "(φ)", "(ι)", "(α|ά|ε|έ|ω|ώ)", "(.*)"}), "$1$2$3$4$5$6><$7$8"},
+	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?lq=*οκεφι*&dq=
+
+	// κακολογιάζω
+	GrhyphRule{customRegexpCompile(
+		[]string{"(.*)", "(ο)", "(λ)", "(ο)", "(γ)", "(ι)", "(α|ά)", "(ά-ζω)", "$"}), "$1$2$3$4$5$6><$7$8"},
 
 	// ...
 
