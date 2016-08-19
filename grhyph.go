@@ -60,10 +60,9 @@ func stringTospeechSounds(s string) ([]SpeechSound, error) {
 	submatches := speechSoundRe.FindAllStringSubmatch(s, -1)
 	speechSounds := make([]SpeechSound, len(submatches))
 
-	// It's not possible to use PCRE-like lookaheads in RE2.
+	// It's not possible to use PCRE-like lookarounds in RE2.
 	// The greeklish equivelant of the consonant combination 'νθ' (/nθ/ -> 'nth')
 	// must split as ["n" "th"] instead of ["nt" "h"].
-	// todo: Extra rules/tests for (sth: σθ|στη), (nth: νθ|ντη).
 	nuTauRe, err := regexp.Compile(grhyph.NuTauRe)
 	if err != nil {
 		return speechSounds, err
@@ -140,21 +139,24 @@ func stringTospeechSounds(s string) ([]SpeechSound, error) {
 		}
 	}
 
+	// Debug:
+	// fmt.Println(speechSounds)
+
 	return speechSounds, nil
 }
 
 func (h *Hyphenation) Hyphenate() (string, error) {
-	ss, err := stringTospeechSounds(h.Input)
+	speechSounds, err := stringTospeechSounds(h.Input)
 	if err != nil {
 		return "", err
 	}
 
-	h.SpeechSounds = ss
+	h.SpeechSounds = speechSounds
 	h.WSCRe = grhyph.GetWSCRe(h.Options.CombineConsonantsDn, h.Options.CombineConsonantsKv,
 		h.Options.CombineConsonantsPf, h.Options.CombineConsonantsFk)
 
 	if !h.Options.UseGrhyphRules {
-		return plainHyphenation(ss, h.Options, h.WSCRe)
+		return plainHyphenation(speechSounds, h.Options, h.WSCRe)
 	} else {
 		return h.regexpHyphenation()
 	}
@@ -189,7 +191,7 @@ func plainHyphenation(ss []SpeechSound, o Options, wSCRe *regexp.Regexp) (string
 				i += ss[i].ImmediateConsonants
 				continue
 			} else if ss[i].ImmediateVowelExists {
-				// Flag useful for quick end-of-the-line splitting/hyphenation.
+				// Flag useful for quick end-of-the-line splitting (hyphenation).
 				if o.QuickSynizesis &&
 					synizesisVowelsRe.MatchString(fmt.Sprintf("%s%s", ss[i].Match, ss[i+1].Match)) {
 					hyphenedBytes = append(hyphenedBytes, ss[i].Match...)
@@ -244,12 +246,12 @@ func (h *Hyphenation) regexpHyphenation() (string, error) {
 	// Seperate words using speechSounds punctuations.
 	// A bit less complicated than, say, an additional *Regexp based Split would be.
 	lastPunctuationIndex := -1
-	for i, ss := range h.SpeechSounds {
+	for i, speechSounds := range h.SpeechSounds {
 		start := lastPunctuationIndex + 1
 		end := i - 1
 		isLastIteration := (i == len(h.SpeechSounds)-1)
 
-		if ss.Group == "punctuation" {
+		if speechSounds.Group == "punctuation" {
 			if start >= 0 && i-start > 1 {
 				if (i - start) >= h.Options.MinHyphenationLength {
 					hyphenedBytes = append(hyphenedBytes, regexpReplace(h.SpeechSounds[start:i], h.Options, h.WSCRe)...)
@@ -269,17 +271,17 @@ func (h *Hyphenation) regexpHyphenation() (string, error) {
 	return string(hyphenedBytes[:]), err
 }
 
-func speechSoundJoin(ss []SpeechSound) string {
+func speechSoundJoin(speechSounds []SpeechSound) string {
 	var joinedMatchesBytes []byte
-	for i := 0; i < len(ss); i++ {
-		joinedMatchesBytes = append(joinedMatchesBytes, ss[i].Match...)
+	for i := 0; i < len(speechSounds); i++ {
+		joinedMatchesBytes = append(joinedMatchesBytes, speechSounds[i].Match...)
 	}
 
 	return string(joinedMatchesBytes[:])
 }
 
-func regexpReplace(ss []SpeechSound, o Options, wSCRe *regexp.Regexp) string {
-	joinedSpeechSounds := speechSoundJoin(ss)
+func regexpReplace(speechSounds []SpeechSound, o Options, wSCRe *regexp.Regexp) string {
+	joinedSpeechSounds := speechSoundJoin(speechSounds)
 
 	if CachingEnabled {
 		cacheKey := CacheKey{joinedSpeechSounds, o}
@@ -291,7 +293,7 @@ func regexpReplace(ss []SpeechSound, o Options, wSCRe *regexp.Regexp) string {
 
 	for _, rule := range grhyph.GrhyphRules {
 		if rule.CompiledCustomRe.MatchString(joinedSpeechSounds) {
-			repl := strings.Replace(rule.Replacement, "-", o.Seperator, -1)
+			replacement := strings.Replace(rule.Replacement, "-", o.Seperator, -1)
 
 			var (
 				middleRunes      []byte
@@ -299,13 +301,13 @@ func regexpReplace(ss []SpeechSound, o Options, wSCRe *regexp.Regexp) string {
 				toHyphenateRight string
 			)
 
-			for i, rune := range repl {
+			for i, rune := range replacement {
 				currentCharacter := fmt.Sprintf("%c", rune)
 				if currentCharacter == ">" {
-					toHyphenateLeft = rule.CompiledCustomRe.ReplaceAllString(joinedSpeechSounds, repl[0:i])
+					toHyphenateLeft = rule.CompiledCustomRe.ReplaceAllString(joinedSpeechSounds, replacement[0:i])
 					middleRunes = nil
-				} else if currentCharacter == "<" && i < len(repl) {
-					toHyphenateRight = rule.CompiledCustomRe.ReplaceAllString(joinedSpeechSounds, repl[i+1:])
+				} else if currentCharacter == "<" && i < len(replacement) {
+					toHyphenateRight = rule.CompiledCustomRe.ReplaceAllString(joinedSpeechSounds, replacement[i+1:])
 					break
 				} else {
 					middleRunes = append(middleRunes, currentCharacter...)
@@ -322,13 +324,13 @@ func regexpReplace(ss []SpeechSound, o Options, wSCRe *regexp.Regexp) string {
 
 			// Debug:
 			// fmt.Println(rule)
-			// todo: return pre-compiled rule, maybe with a record of the line it exists at.
+			// todo: Return the pre-compiled rules, if possible with a record of the line in which they were defined.
 
 			return toHyphenateLeft + hyphenedMiddle + toHyphenateRight
 		}
 	}
 
-	hyphened, _ := plainHyphenation(ss, o, wSCRe)
+	hyphened, _ := plainHyphenation(speechSounds, o, wSCRe)
 
 	if CachingEnabled {
 		cacheKey := CacheKey{HyphenationInput: joinedSpeechSounds, HyphenationOptions: o}

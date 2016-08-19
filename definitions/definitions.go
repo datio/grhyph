@@ -6,12 +6,14 @@ import (
 	"strings"
 )
 
-// Match groups: ["" "vowels" "consonants" "punctuation" "other"]
-var SpeechSoundRe = "(?i)(?P<vowels>[ϊϋΐΰ]|[αa][ύυuy]|[εe][ύυuy]|[ηi][ύυuy]|[αa][ίιi]|[εe][ίιi]|[οo][ύυuy]|[οo][ίιi]|[άαa]|[έεe]|[ήηhi]|[ίιi]|[όοo]|[ύυyu]|[ώωwo])|(?P<consonants>(?:[μm][πp]|b)|(?:[γg][κk]|[γg])|[νn][τtj]|[νn]|(?:[τtj]h|[θ8])|(?:[δd])|(?:[τtj][ζz]|j)|[ζz]|[τtj][σs]|[σs][τtj]|[βv]|[λl]|[μm]|(?:ks|κs|kσ|[ξx3])|[ρr]|[τt]|[φf]|[χxh]|ch|(?:[pπ][σs]|[ψ4])|[πp]|[σsc]|[κk])|(?P<punctuation>[\\s\\.,\\-–—―\\/'’\":!?;&@«»])|(?P<other>.?)"
+// todo: fix the (sth: σθ|στη), (nth: νθ|ντη) issue, where it is ambiguous if greeklish 'h' should be processed as a
+// vowel or a consonant, by creating definitions for the affected words (e.g. antiaisthhtika).
+// Quick synizesis has the issue fixed.
+const SpeechSoundRe = "(?i)(?P<vowels>[ϊϋΐΰ]|[αa][ύυuy]|[εe][ύυuy]|[ηi][ύυuy]|[αa][ίιi]|[εe][ίιi]|[οo][ύυuy]|[οo][ίιi]|[άαa]|[έεe]|[ήηhi]|[ίιi]|[όοo]|[ύυyu]|[ώωwo])|(?P<consonants>(?:[μm][πp]|b)|(?:[γg][κk]|[γg])|[νn][τtj]|[νn]|(?:[τtj]h|[θ8])|(?:[δd])|(?:[τtj][ζz]|j)|[ζz]|[τtj][σs]|[σs][τtj]|[βv]|[λl]|[μm]|(?:ks|κs|kσ|[ξx3])|[ρr]|[τt]|[φf]|[χxh]|ch|(?:[pπ][σs]|[ψ4])|[πp]|[σsc]|[κk])|(?P<punctuation>[\\s\\.,\\-–—―\\/'’\":!?;&@«»])|(?P<other>.?)"
 
-var NuTauRe = "(?i)^([νn])([τt])$"
+const NuTauRe = "(?i)^([νn])([τt])$"
 
-// Valid Greek word starting consontants.
+// Valid Greek word starting consonants.
 // Important: Verify the getWSCRe()'s conditions when altering.
 const WordStartConsonantsRe = "(?i)^([βvb](?:[τt]h|[δdγgλlρr])|[γg](?:[τt]h|[δdκkλlνnρr])|(?:[τt]h|[δd])[νn]|(?:[τt]h|[δd])[ρr]|(?:[τt]h|[θ8])[λlνnρr]|[κk][βvb]|[κk][λlνnρrτtj]|[μm][νnπp]|[νn][τtj][^h]|[πp][λlνnρrτtj]|[πp][φf]|[σs](?:[τt][^h]|[θ8βvbγgκkλlμmνnπpφfχxh])|[τt][ζzμmρrσs]|[φf](?:[τt]h?|[θ8λlρrχxh]|ch)|[φf][κk]|(?:[χxh]|ch)(?:[θ8λlνnρr]|[τt]h?))"
 
@@ -52,7 +54,7 @@ func GetWSCRe(combDn, combKv, combPf, combFk bool) *regexp.Regexp {
 }
 
 // Vowel combinations prone to synizesis.
-var SynizesisVowelsRe = "(?i)^([αάa][ηhιϊi]|[εe][ϊ]|[εe][ιi](?:[αάaοόoωώw]|[οo][υύuy])|[ιi](?:[αάaεέeοόoωώw]|[αa][ιίi]|[οo][ιίiυύuy])|[οόo](?:[ιiϊ]|[εe][ιi])|[οo][ιi](?:[αάaεέeοόoωώw]|[οo][ιίiυύuy])|[υuy][αάaιiοόoωώw])$"
+const SynizesisVowelsRe = "(?i)^([αάa][ηhιϊi]|[εe][ϊ]|[εe][ιi](?:[αάaοόoωώw]|[οo][υύuy])|[ιih](?:[αάaεέeοόoωώw]|[αa][ιίi]|[οo][ιίiυύuy])|[οόo](?:[ιiϊ]|[εe][ιi])|[οo][ιi](?:[αάaεέeοόoωώw]|[οo][ιίiυύuy])|[υuy][αάaιiοόoωώw]|hh)$"
 
 var customRegexpsMap = map[string]string{ // todo: Test map records.
 	"(.*)":                        "(.*)",
@@ -152,6 +154,7 @@ var customRegexpsMap = map[string]string{ // todo: Test map records.
 	"(στ|τ)":                      "([σs][τt]|[τt])",
 	"(κ)":                         "([κk])",
 	"(κκ|κ)":                      "([κk][κk]?)",
+	"(κ|χ)":                       "([κk]|[χxh]|ch)",
 	"(κ|σμ|στ)":                   "([κk]|[σs][μmτt])",
 	"(κος)":                       "([κk](?:[εe]|[οo](?:[ιi]|[σs]|[υuy][σs]?|[νn])?|[ωw][νn]))",
 	"(λ)":                         "([λl])",
@@ -6025,9 +6028,9 @@ var GrhyphRules = []GrhyphRule{
 		[]string{"^", "(ε)", "(λ)", "(η)", "('ά'|'άς'|'ές'|'ών')", "$"}), "$1-$2$3$4"},
 	// todo: αγρελιάς etc.
 
-	// ελικοειδώς
+	// ελικοειδώς, καλυκοειδής
 	GrhyphRule{customRegexpCompile(
-		[]string{"(.*)", "(λ)", "(ι)", "(κ)", "(ο)", "(ι)", "(δ)", "(.*)"}), "$1$2$3$4$5>-<$6$7$8"},
+		[]string{"(.*)", "(λ)", "(υ|ι)", "(κ)", "(ο)", "(ι)", "(δ)", "(.*)"}), "$1$2$3$4$5>-<$6$7$8"},
 	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?lq=*λικοιδ*&dq=
 
 	// ελιόψωμο
@@ -7541,6 +7544,37 @@ var GrhyphRules = []GrhyphRule{
 	GrhyphRule{customRegexpCompile(
 		[]string{"(.*)", "(ου)", "(ζ)", "(α)", "(ν)", "(ι)", "(α|ά|ε|έ|ω|ώ)", "(.*)"}), "$1$2$3$4$5$6><$7$8"},
 	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?lq=*ουζανι*&dq=
+
+	// καλυβάκι
+	GrhyphRule{customRegexpCompile(
+		[]string{"(.*)", "(α)", "(λ)", "(υ|ι)", "(β)", "(α|ά)", "(κ)", "(ι)", "(α|ά|ω|ώ)", "(.*)"}),
+		"$1$2$3$4$5$6$7$8><$9$10"},
+	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?lq=*αλυβάκι*&dq=
+
+	// καλύβι
+	GrhyphRule{customRegexpCompile(
+		[]string{"(.*)", "(α)", "(λ)", "(υ|ύ|ι|ί)", "(β)", "(ι)", "(α|ά|ω|ώ)", "(.*)"}), "$1$2$3$4$5$6><$7$8"},
+	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?lq=*αλυβι*&dq=
+
+	// καλυμμαύκι, καλυμμαύχι
+	GrhyphRule{customRegexpCompile(
+		[]string{"(.*)", "(α)", "(λλ|λ)", "(υ|ι)", "(μμ|μ)", "(α|ά)", "(υ|ύ|φ)", "(κ|χ)", "(ι)", "(α|ά|ω|ώ)", "(.*)"}),
+		"$1$2$3$4$5$6$7$8$9><$10$11"},
+
+	// Καλυμνιώτης
+	GrhyphRule{customRegexpCompile(
+		[]string{"(.*)", "(υ|ι)", "(μ)", "(ν)", "(ι)", "(ω|ώ)", "(τ)", "(.*)"}), "$1$2$3$4$5><$6$7$8"},
+	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?lq=*υμνιωτ*&dq=
+
+	// καλωδιάκι
+	GrhyphRule{customRegexpCompile(
+		[]string{"(.*)", "(ω)", "(δ)", "(ι)", "(α|ά)", "(κ)", "(ι)", "(α|ά|ω|ώ)", "(.*)"}), "$1$2$3$4$5$6$7><$8$9"},
+	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?lq=*ωδιακι*&dq=
+
+	// καμάκι, καμακιά
+	GrhyphRule{customRegexpCompile(
+		[]string{"(.*)", "(κ)", "(α)", "(μ)", "(α|ά)", "(κ)", "(ι)", "(α|ά|ε|έ|ω|ώ)", "(.*)"}), "$1$2$3$4$5$6$7><$8$9"},
+	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?lq=*καμακι*&dq=
 
 	// ...
 
