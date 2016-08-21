@@ -8,9 +8,7 @@ import (
 
 // 'h' is put in the punctuation (ignore) group as a fix for the (nth: νθ|ντη), (sth: σθ|στη) issue, when it is
 // ambiguous if it should be processed as a vowel or a consonant.
-const SpeechSoundRe = "(?i)(?P<punctuation>[\\s\\.,\\-–—―\\/'’\":!?;&@«»]|[νnσs][τtj]h+)|(?P<vowels>[ϊϋΐΰ]|[αa][ύυuy]|[εe][ύυuy]|[ηi][ύυuy]|[αa][ίιi]|[εe][ίιi]|[οo][ύυuy]|[οo][ίιi]|[άαa]|[έεe]|[ήηhi]|[ίιi]|[όοo]|[ύυyu]|[ώωwo])|(?P<consonants>(?:[μm][πp]|b)|(?:[γg][κk]|[γg])|[νn][τtj]|[νn]|(?:[θ8])|(?:[δd])|(?:[τtj][ζz]|j)|[ζz]|[τtj][σs]|[σs][τtj]|[βv]|[λl]|[μm]|(?:ks|κs|kσ|[ξx3])|[ρr]|[τt]|[φf]|[χx]|(?:[pπ][σs]|[ψ4])|[πp]|[σsc]|[κk])|(?P<other>.?)"
-
-const NuTauRe = "(?i)^([νn])([τt])$"
+const SpeechSoundRe = "(?i)(?P<punctuation>[\\s\\.,\\-–—―\\/'’\":!?;&@«»]|[νnσs][τtj]h+)|(?P<vowels>[ϊϋΐΰ]|[αa][ύυuy]|[εe][ύυuy]|[ηi][ύυuy]|[αa][ίιi]|[εe][ίιi]|[οo][ύυuy]|[οo][ίιi]|[άαa]|[έεe]|[ήηhi]|[ίιi]|[όοo]|[ύυyu]|[ώωwo])|(?P<consonants>(?:[μm][πp]|b)|(?:[γg][κk]|[γg])|[νn][τtj]|[νn]|(?:[τt]h|[θ8])|(?:[δd])|(?:[τtj][ζz]|j)|[ζz]|[τtj][σs]|[σs][τtj]|[βv]|[λl]|[μm]|(?:ks|κs|kσ|[ξx3])|[ρr]|[τt]|[φf]|[χx]|(?:[pπ][σs]|[ψ4])|[πp]|[σsc]|[κk])|(?P<other>.?)"
 
 // Valid Greek word starting consonants.
 // Important: Verify the getWSCRe()'s conditions when altering.

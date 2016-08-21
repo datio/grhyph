@@ -57,7 +57,8 @@ func TestPlain(t *testing.T) {
 		{"pandaimonio", "pan-dai-mo-ni-o"},
 		{"panthaimonio", "panthai-mo-ni-o"},
 		{"ταυτότητα", "ταυ-τό-τη-τα"},
-		{"tautothta", "tau-to-th-ta"},
+		{"tautotita", "tau-to-ti-ta"},
+		{"tautothta", "tau-toth-ta"},
 		{"συντηρητικός", "συ-ντη-ρη-τι-κός"},
 		{"sintiritikos", "si-nti-ri-ti-kos"},
 		{"sunthritikos", "sunthri-ti-kos"},
@@ -67,11 +68,10 @@ func TestPlain(t *testing.T) {
 		{`δυο
       γραμμές.`, `δυ-ο
       γραμ-μές.`},
-		{"Mode Plagal - Εμένα μου το παν τα πουλιά", "Mo-de Pla-gal - Ε-μέ-να μου το παν τα που-λι-ά"},
 		{"Μια και δυο. Μία και δύο", "Μι-α και δυ-ο. Μί-α και δύ-ο"},
 		{"χελιδόνια", "χε-λι-δό-νι-α"},
 		{"αηδόνια", "α-η-δό-νι-α"},
-		{"English words are hyphenated using Greek/Greeklish grammar. Their detection and exclusion has to happen outside of this package.", "En-gli-sh w-ords a-re h-y-ph-e-na-ted u-sing Gre-ek/Gre-e-kli-sh gram-mar. Th-eir de-tec-ti-on and exc-lu-si-on h-as to h-ap-pen ou-tsi-de of th-is pac-ka-ge."},
+		{"English words are hyphenated using Greek/Greeklish grammar. Their detection and exclusion has to happen outside of this package.", "En-gli-sh w-ords a-re h-y-ph-e-na-ted u-sing Gre-ek/Gre-e-kli-sh gram-mar. Their de-tec-ti-on and exc-lu-si-on h-as to h-ap-pen ou-tsi-de of this pac-ka-ge."},
 	}
 
 	for _, test := range tests {
