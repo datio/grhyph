@@ -19,6 +19,48 @@ func TestPlain(t *testing.T) {
 	}
 
 	tests := []hyphenationTest{
+		{"μυστηριώδης", "μυ-στη-ρι-ώ-δης"},
+		{"mustiriwdis", "mu-sti-ri-w-dis"},
+		{"musthriwdhs", "musthri-w-dhs"},
+		{"στήριγμα", "στή-ριγ-μα"},
+		{"stirigma", "sti-rig-ma"},
+		{"sthrigma", "sthrig-ma"},
+		{"παρίσθμιος", "πα-ρί-σθμι-ος"},
+		{"paris8mios", "pa-ri-s8mi-os"},
+		{"paristhmios", "pa-risthmi-os"},
+		{"άσθμα", "ά-σθμα"},
+		{"as8ma", "a-s8ma"},
+		{"asthma", "asthma"},
+		{"διαισθητικός", "δι-αι-σθη-τι-κός"},
+		{"diais8htikos", "di-ai-s8h-ti-kos"},
+		{"επιπρόσθετα", "ε-πι-πρό-σθε-τα"},
+		{"epiprostheta", "e-pi-prosthe-ta"},
+		{"ευπρόσδεκτος", "ευ-πρόσ-δε-κτος"},
+		{"euprosdektos", "eu-pros-de-ktos"},
+		{"euprosthektos", "eu-prosthe-ktos"},
+		{"τρισδιάστατος", "τρισ-δι-ά-στα-τος"},
+		{"trisdiastatos", "tris-di-a-sta-tos"},
+		{"tristhiastatos", "tristhi-a-sta-tos"},
+		{"αντηλιακό", "α-ντη-λι-α-κό"},
+		{"antiliako", "a-nti-li-a-ko"},
+		{"anthliako", "anthli-a-ko"},
+		{"αντήχηση", "α-ντή-χη-ση"},
+		{"anthhisi", "anthhi-si"},
+		{"anthhhsh", "anthhhsh"},
+		{"άνθρωπος", "άν-θρω-πος"},
+		{"an8rwpos", "an-8rw-pos"},
+		{"anthrwpos", "anthrw-pos"},
+		{"ενθαρρύνω", "εν-θαρ-ρύ-νω"},
+		{"en8arrunw", "en-8ar-ru-nw"},
+		{"entharrunw", "enthar-ru-nw"},
+		{"πανδαιμόνιο", "παν-δαι-μό-νι-ο"},
+		{"pandaimonio", "pan-dai-mo-ni-o"},
+		{"panthaimonio", "panthai-mo-ni-o"},
+		{"ταυτότητα", "ταυ-τό-τη-τα"},
+		{"tautothta", "tau-to-th-ta"},
+		{"συντηρητικός", "συ-ντη-ρη-τι-κός"},
+		{"sintiritikos", "si-nti-ri-ti-kos"},
+		{"sunthritikos", "sunthri-ti-kos"},
 		{"αλκμιόνη", "αλκ-μι-ό-νη"},
 		{"aλkμiοnη", "aλk-μi-ο-nη"},
 		{"grafete Ellhnika", "gra-fe-te El-lh-ni-ka"},
@@ -29,7 +71,7 @@ func TestPlain(t *testing.T) {
 		{"Μια και δυο. Μία και δύο", "Μι-α και δυ-ο. Μί-α και δύ-ο"},
 		{"χελιδόνια", "χε-λι-δό-νι-α"},
 		{"αηδόνια", "α-η-δό-νι-α"},
-		{"English words are hyphenated using Greek/Greeklish grammar. Their detection and exclusion has to happen outside of this package.", "En-gli-sh w-ords a-re h-y-ph-e-na-ted u-sing Gre-ek/Gre-e-kli-sh gram-mar. Their de-tec-ti-on and exc-lu-si-on h-as to h-ap-pen ou-tsi-de of this pac-ka-ge."},
+		{"English words are hyphenated using Greek/Greeklish grammar. Their detection and exclusion has to happen outside of this package.", "En-gli-sh w-ords a-re h-y-ph-e-na-ted u-sing Gre-ek/Gre-e-kli-sh gram-mar. Th-eir de-tec-ti-on and exc-lu-si-on h-as to h-ap-pen ou-tsi-de of th-is pac-ka-ge."},
 	}
 
 	for _, test := range tests {
@@ -91,6 +133,8 @@ func TestRules(t *testing.T) {
 	}
 
 	tests := []hyphenationTest{
+		// {"drasthriothta", "dra-sth-ri-othta"},
+		// {"lupanthhrio", "lu-pa-nth-ri-o"},
 		{"αλκμιόνη", "αλκ-μι-ό-νη"},
 		// {"Μια και δυο. Μία και δύο", "Μια και δυο. Μί-α και δύ-ο"}, // todo: μ, δ first.
 		// {"δυο μαύρα χελιδόνια", "δυο μαύ/ρα χε/λι/δό/νια"}, // todo: χ first.
@@ -127,6 +171,8 @@ func TestQuickSynizesisRules(t *testing.T) {
 	}
 
 	tests := []hyphenationTest{
+		// {"drasthriothta", "dra-sth-ri-othta"},
+		// {"lupanthhrio", "lu-pa-nth-rio"},
 		{"αλκμιόνη", "αλκ-μιό-νη"},
 		{"aidiniwtis", "a-i-di-niw-tis"},
 	}

@@ -6,10 +6,9 @@ import (
 	"strings"
 )
 
-// todo: fix the (sth: σθ|στη), (nth: νθ|ντη) issue, where it is ambiguous if greeklish 'h' should be processed as a
-// vowel or a consonant, by creating definitions for the affected words (e.g. antiaisthhtika).
-// Quick synizesis has the issue fixed.
-const SpeechSoundRe = "(?i)(?P<vowels>[ϊϋΐΰ]|[αa][ύυuy]|[εe][ύυuy]|[ηi][ύυuy]|[αa][ίιi]|[εe][ίιi]|[οo][ύυuy]|[οo][ίιi]|[άαa]|[έεe]|[ήηhi]|[ίιi]|[όοo]|[ύυyu]|[ώωwo])|(?P<consonants>(?:[μm][πp]|b)|(?:[γg][κk]|[γg])|[νn][τtj]|[νn]|(?:[τtj]h|[θ8])|(?:[δd])|(?:[τtj][ζz]|j)|[ζz]|[τtj][σs]|[σs][τtj]|[βv]|[λl]|[μm]|(?:ks|κs|kσ|[ξx3])|[ρr]|[τt]|[φf]|[χxh]|ch|(?:[pπ][σs]|[ψ4])|[πp]|[σsc]|[κk])|(?P<punctuation>[\\s\\.,\\-–—―\\/'’\":!?;&@«»])|(?P<other>.?)"
+// 'h' is put in the punctuation (ignore) group as a fix for the (nth: νθ|ντη), (sth: σθ|στη) issue, when it is
+// ambiguous if it should be processed as a vowel or a consonant.
+const SpeechSoundRe = "(?i)(?P<punctuation>[\\s\\.,\\-–—―\\/'’\":!?;&@«»]|[νnσs][τtj]h+)|(?P<vowels>[ϊϋΐΰ]|[αa][ύυuy]|[εe][ύυuy]|[ηi][ύυuy]|[αa][ίιi]|[εe][ίιi]|[οo][ύυuy]|[οo][ίιi]|[άαa]|[έεe]|[ήηhi]|[ίιi]|[όοo]|[ύυyu]|[ώωwo])|(?P<consonants>(?:[μm][πp]|b)|(?:[γg][κk]|[γg])|[νn][τtj]|[νn]|(?:[θ8])|(?:[δd])|(?:[τtj][ζz]|j)|[ζz]|[τtj][σs]|[σs][τtj]|[βv]|[λl]|[μm]|(?:ks|κs|kσ|[ξx3])|[ρr]|[τt]|[φf]|[χx]|(?:[pπ][σs]|[ψ4])|[πp]|[σsc]|[κk])|(?P<other>.?)"
 
 const NuTauRe = "(?i)^([νn])([τt])$"
 
@@ -54,7 +53,7 @@ func GetWSCRe(combDn, combKv, combPf, combFk bool) *regexp.Regexp {
 }
 
 // Vowel combinations prone to synizesis.
-const SynizesisVowelsRe = "(?i)^([αάa][ηhιϊi]|[εe][ϊ]|[εe][ιi](?:[αάaοόoωώw]|[οo][υύuy])|[ιih](?:[αάaεέeοόoωώw]|[αa][ιίi]|[οo][ιίiυύuy])|[οόo](?:[ιiϊ]|[εe][ιi])|[οo][ιi](?:[αάaεέeοόoωώw]|[οo][ιίiυύuy])|[υuy][αάaιiοόoωώw]|hh)$"
+const SynizesisVowelsRe = "(?i)^([αάa][ηhιϊi]|[εe][ϊ]|[εe][ιi](?:[αάaοόoωώw]|[οo][υύuy])|[ιi](?:[αάaεέeοόoωώw]|[αa][ιίi]|[οo][ιίiυύuy])|[οόo](?:[ιiϊ]|[εe][ιi])|[οo][ιi](?:[αάaεέeοόoωώw]|[οo][ιίiυύuy])|[υuy][αάaιiοόoωώw])$"
 
 var customRegexpsMap = map[string]string{ // todo: Test map records.
 	"(.*)":                        "(.*)",

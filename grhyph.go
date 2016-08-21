@@ -60,14 +60,6 @@ func stringTospeechSounds(s string) ([]SpeechSound, error) {
 	submatches := speechSoundRe.FindAllStringSubmatch(s, -1)
 	speechSounds := make([]SpeechSound, len(submatches))
 
-	// It's not possible to use PCRE-like lookarounds in RE2.
-	// The greeklish equivelant of the consonant combination 'νθ' (/nθ/ -> 'nth')
-	// must split as ["n" "th"] instead of ["nt" "h"].
-	nuTauRe, err := regexp.Compile(grhyph.NuTauRe)
-	if err != nil {
-		return speechSounds, err
-	}
-
 	var (
 		eventualVowelsExist  bool
 		immediateVowelExists bool
@@ -75,29 +67,6 @@ func stringTospeechSounds(s string) ([]SpeechSound, error) {
 	)
 
 	for submatchIndex := len(submatches) - 1; submatchIndex >= 0; submatchIndex-- {
-		// Greeklish speechSound seperation fix for 'Nu' 'Tau' 'H' combinations.
-		h := submatches[submatchIndex][0]
-
-		// If the current index includes an 'H' vowel, match the previous one to a 'NuTau' combination.
-		if (h == "h" || h == "H") && submatchIndex > 0 {
-			nt := nuTauRe.FindStringSubmatch(submatches[submatchIndex-1][0])
-
-			if len(nt) > 1 && len(submatches)-1 != submatchIndex &&
-				!(submatchIndex > 0 && submatchIndex+1 < len(submatches) && len(submatches[submatchIndex+1][3]) > 0) {
-
-				// Replace [νn][τt] with the [νn] match.
-				submatches[submatchIndex-1][0] = nt[1]
-				submatches[submatchIndex-1][2] = nt[1]
-
-				// Append the [τt] match before [h].
-				// The speechSound 'h' normally belongs to the "vowels" group.
-				// Move it to the "consonants" group.
-				submatches[submatchIndex][0] = nt[2] + h
-				submatches[submatchIndex][2] = nt[2] + h
-				submatches[submatchIndex][1] = "" //remove from "vowels".
-			}
-		}
-
 		// ["" "vowels" "consonants" "punctuation" "other"]
 		speechSoundGroupIndex := 0
 
