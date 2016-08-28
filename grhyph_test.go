@@ -70,6 +70,7 @@ func TestPlain(t *testing.T) {
 		{"sunthritikos", "sunthri-ti-kos"},
 		{"αλκμιόνη", "αλκ-μι-ό-νη"},
 		{"aλkμiοnη", "aλk-μi-ο-nη"},
+		{"φαστφουντάδικο", "φαστ-φου-ντά-δι-κο"},
 		{"grafete Ellhnika", "gra-fe-te El-lh-ni-ka"},
 		{`δυο
       γραμμές.`, `δυ-ο

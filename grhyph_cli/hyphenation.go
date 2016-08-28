@@ -14,7 +14,7 @@ func main() {
 	quickSynizesis := flag.Bool("quick-synizesis", false, `Combine nearby vowels, whenever synizesis is prone to occur.`)
 
 	// The seperator defaults to a single soft hyphen (U+00AD SOFT HYPHEN: "­").
-	seperator := flag.String("seperator", "­", `The string to be appended between word syllables.`)
+	seperator := flag.String("seperator", "­", `The seperator to append between hyphens.`)
 
 	useGrhyphRules := flag.Bool("use-rules", false, `Match and replace using rules, based on regular expressions,
 	 as defined inside the definitions.go file.`)

@@ -8,11 +8,11 @@ import (
 
 // 'h' is put in the punctuation (ignore) group as a fix for the (nth: νθ|ντη), (sth: σθ|στη) issue, when it is
 // ambiguous if it should be processed as a vowel or a consonant.
-const SpeechSoundRe = "(?i)(?P<punctuation>[\\s\\.,\\-–—―\\/'’\":!?;&@«»]|[νnσs][τtj]h+)|(?P<vowels>[ϊϋΐΰ]|[αa][ύυuy]|[εe][ύυuy]|[ηi][ύυuy]|[αa][ίιi]|[εe][ίιi]|[οo][ύυuy]|[οo][ίιi]|[άαa]|[έεe]|[ήηhi]|[ίιi]|[όοo]|[ύυyu]|[ώωwo])|(?P<consonants>(?:[μm][πp]|b)|(?:[γg][κk]|[γg])|[νn][τtj]|[νn]|(?:[τt]h|[θ8])|(?:[δd])|(?:[τtj][ζz]|j)|[ζz]|[τtj][σs]|[σs][τtj]|[βv]|[λl]|[μm]|(?:ks|κs|kσ|[ξx3])|[ρr]|[τt]|[φf]|[χx]|(?:[pπ][σs]|[ψ4])|[πp]|[σsc]|[κk])|(?P<other>.?)"
+const SpeechSoundRe = "(?i)(?P<punctuation>[\\s\\.,\\-–—―\\/'’\":!?;&@«»]|[νnσs][τtj]h+)|(?P<vowels>[ϊϋΐΰ]|[αa][ύυuy]|[εe][ύυuy]|[ηi][ύυuy]|[αa][ίιi]|[εe][ίιi]|[οo][ύυuy]|[οo][ίιi]|[άαa]|[έεe]|[ήηhi]|[ίιi]|[όοo]|[ύυyu]|[ώωwo])|(?P<consonants>(?:[μm][πp]|b)|(?:[γg][κk]|[γg])|[νn][τtj]|[νn]|(?:[τt]h|[θ8])|(?:[δd])|(?:[τtj][ζz]|j)|[ζz]|[τtj][σs]|[σs][τtj]|[βv]|[λl]|[μm]|(?:ks|κs|kσ|[ξx3])|[ρr]|[τt]|[φf]|[χx]|ch|(?:[pπ][σs]|[ψ4])|[πp]|[σsc]|[κk])|(?P<other>.?)"
 
 // Valid Greek word starting consonants.
 // Important: Verify the getWSCRe()'s conditions when altering.
-const WordStartConsonantsRe = "(?i)^([βvb](?:[τt]h|[δdγgλlρr])|[γg](?:[τt]h|[δdκkλlνnρr])|(?:[τt]h|[δd])[νn]|(?:[τt]h|[δd])[ρr]|(?:[τt]h|[θ8])[λlνnρr]|[κk][βvb]|[κk][λlνnρrτtj]|[μm][νnπp]|[νn][τtj][^h]|[πp][λlνnρrτtj]|[πp][φf]|[σs](?:[τt][^h]|[θ8βvbγgκkλlμmνnπpφfχxh])|[τt][ζzμmρrσs]|[φf](?:[τt]h?|[θ8λlρrχxh]|ch)|[φf][κk]|(?:[χxh]|ch)(?:[θ8λlνnρr]|[τt]h?))"
+const WordStartConsonantsRe = "(?i)^([βvb](?:[τt]h|[δdγgλlρr])|[γg](?:[τt]h|[δdκkλlνnρr])|(?:[τt]h|[δd])[νn]|(?:[τt]h|[δd])[ρr]|(?:[τt]h|[θ8])[λlνnρr]|[κk][βvb]|[κk][λlνnρrτtj]|[μm][νnπp]|[νn][τtj][^h]|[πp][λlνnρrτtj]|[πp][φf]|[σs](?:[τt][^hθ8βvbγgκkμmνnπpφfχxh]|[θ8βvbγgκkλlμmνnπpφfχxh])|[τt][ζzμmρrσs]|[φf](?:[τt]h?|[θ8λlρrχxh]|ch)|[φf][κk]|(?:[χxh]|ch)(?:[θ8λlνnρr]|[τt]h?))"
 
 type WSCReMapKey struct {
 	CombineConsonantsDn bool
@@ -60,17 +60,17 @@ var customRegexpsMap = map[string]string{ // todo: Test map records.
 	"$":                           "$",
 	"(α)":                         "([αa])",
 	"(ά)":                         "(ά)",
-	"(α|ο)":                       "([αaοo])",
-	"(α|ε|ο|ω)":                   "([αaεeοoωw])",
-	"(α|ά|ω|ώ)":                   "([αάaοόoωώw])",
+	"(α|ά)":                       "([αάa])",
 	"(α|ά|ε|έ|ω|ώ)":               "([αάaεέeωώwοόo])",
+	"(α|ά|ας|άς)":                 "([αάa][σs]?)",
+	"(α|ο)":                       "([αaοo])",
+	"(α|ά|ω|ώ)":                   "([αάaοόoωώw])",
+	"(α|ε|ο|ω)":                   "([αaεeοoωw])",
 	"(α|ε|ω|ώ)":                   "([αaεeωώwοόo])",
 	"(α|ε|ω)":                     "([αaεeωwοo])",
+	"(α|ε)":                       "([αaεe])",
 	"(ά|έ)":                       "([άέ])",
 	"(ά|έ|ώ)":                     "([άέώό])",
-	"(α|ε)":                       "([αaεe])",
-	"(α|ά)":                       "([αάa])",
-	"(α|ά|ας|άς)":                 "([αάa][σs]?)",
 	"(α|ά|ας|άς|ες|ές|'ων'|'ών')": "([αάa][σs]?|[εέe][σs]|[ωώw][νn])",
 	"(α|ας|ες|ων)":                "([αa][σs]?|[εe][σs]|[ωwοo][νn])",
 	"(α|ας|ες|ων 2)":              "([αάa][σs]?|[εέe][σs]|[ωώwοόo][νn])",
@@ -3275,7 +3275,7 @@ var GrhyphRules = []GrhyphRule{
 
 	// βιάζω, βιάσω
 	GrhyphRule{customRegexpCompile(
-		[]string{"^", "(β)", "(ι)", "(βιά-ζω)", "$"}), "$1$<><$3$6"},
+		[]string{"^", "(β)", "(ι)", "(βιά-ζω)", "$"}), "$1$2><$3$6"},
 
 	// βιάση
 	GrhyphRule{customRegexpCompile(
