@@ -2,7 +2,6 @@ package grhyph
 
 import (
 	"fmt"
-	"github.com/datio/grhyph/definitions"
 	"regexp"
 	"strings"
 )
@@ -53,7 +52,7 @@ func GetDefaultOptions() Options {
 	return defaultOptions
 }
 
-var speechSoundRe *regexp.Regexp = regexp.MustCompile(grhyph.SpeechSoundRe)
+var speechSoundRe *regexp.Regexp = regexp.MustCompile(SpeechSoundRe)
 
 func stringTospeechSounds(s string) ([]SpeechSound, error) {
 	submatchGroups := speechSoundRe.SubexpNames()
@@ -121,7 +120,7 @@ func (h *Hyphenation) Hyphenate() (string, error) {
 	}
 
 	h.SpeechSounds = speechSounds
-	h.WSCRe = grhyph.GetWSCRe(h.Options.CombineConsonantsDn, h.Options.CombineConsonantsKv,
+	h.WSCRe = GetWSCRe(h.Options.CombineConsonantsDn, h.Options.CombineConsonantsKv,
 		h.Options.CombineConsonantsPf, h.Options.CombineConsonantsFk)
 
 	if !h.Options.UseGrhyphRules {
@@ -133,7 +132,7 @@ func (h *Hyphenation) Hyphenate() (string, error) {
 	return "", nil
 }
 
-var synizesisVowelsRe *regexp.Regexp = regexp.MustCompile(grhyph.SynizesisVowelsRe)
+var synizesisVowelsRe *regexp.Regexp = regexp.MustCompile(SynizesisVowelsRe)
 
 // Hyphenate without using the GrhyphRules set from the definitions.
 func plainHyphenation(ss []SpeechSound, o Options, wSCRe *regexp.Regexp) (string, error) {
@@ -260,7 +259,7 @@ func regexpReplace(speechSounds []SpeechSound, o Options, wSCRe *regexp.Regexp) 
 		}
 	}
 
-	for _, rule := range grhyph.GrhyphRules {
+	for _, rule := range GrhyphRules {
 		if rule.CompiledCustomRe.MatchString(joinedSpeechSounds) {
 			replacement := strings.Replace(rule.Replacement, "-", o.Seperator, -1)
 
