@@ -96,14 +96,14 @@ func stringTospeechSounds(s string) ([]SpeechSound, error) {
 		switch submatchGroups[speechSoundGroupIndex] {
 		case "vowels":
 			eventualVowelsExist = true
-		case "punctuation":
+		case "punctuation", "other":
 			eventualVowelsExist = false
 		}
 
-		if submatchGroups[speechSoundGroupIndex] != "consonants" {
-			immediateConsonants = 0
-		} else {
+		if submatchGroups[speechSoundGroupIndex] == "consonants" {
 			immediateConsonants++
+		} else {
+			immediateConsonants = 0
 		}
 	}
 

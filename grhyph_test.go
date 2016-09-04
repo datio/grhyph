@@ -21,7 +21,7 @@ func TestPlain(t *testing.T) {
 	tests := []hyphenationTest{
 		{"μυστηριώδης", "μυ-στη-ρι-ώ-δης"},
 		{"mustiriwdis", "mu-sti-ri-w-dis"},
-		{"musthriwdhs", "musthri-w-dhs"},
+		{"musthriwdhs", "musthri-wdhs"},
 		{"στήριγμα", "στή-ριγ-μα"},
 		{"stirigma", "sti-rig-ma"},
 		{"sthrigma", "sthrig-ma"},
@@ -35,7 +35,8 @@ func TestPlain(t *testing.T) {
 		{"diastima", "di-a-sti-ma"},
 		{"diasthma", "di-asthma"},
 		{"διαισθητικός", "δι-αι-σθη-τι-κός"},
-		{"diais8htikos", "di-ai-s8h-ti-kos"},
+		{"diaisthitikos", "di-aisthi-ti-kos"},
+		{"diais8htikos", "di-ais8hti-kos"},
 		{"επιπρόσθετα", "ε-πι-πρό-σθε-τα"},
 		{"epiprostheta", "e-pi-prosthe-ta"},
 		{"ευπρόσδεκτος", "ευ-πρόσ-δε-κτος"},
@@ -71,14 +72,14 @@ func TestPlain(t *testing.T) {
 		{"αλκμιόνη", "αλκ-μι-ό-νη"},
 		{"aλkμiοnη", "aλk-μi-ο-nη"},
 		{"φαστφουντάδικο", "φαστ-φου-ντά-δι-κο"},
-		{"grafete Ellhnika", "gra-fe-te El-lh-ni-ka"},
+		{"grafete Ellhnika", "gra-fe-te Ellhni-ka"},
 		{`δυο
       γραμμές.`, `δυ-ο
       γραμ-μές.`},
 		{"Μια και δυο. Μία και δύο", "Μι-α και δυ-ο. Μί-α και δύ-ο"},
 		{"χελιδόνια", "χε-λι-δό-νι-α"},
 		{"αηδόνια", "α-η-δό-νι-α"},
-		{"English words are hyphenated using Greek/Greeklish grammar. Their detection and exclusion has to happen outside of this package.", "En-gli-sh w-ords a-re h-y-ph-e-na-ted u-sing Gre-ek/Gre-e-kli-sh gram-mar. Their de-tec-ti-on and exc-lu-si-on h-as to h-ap-pen ou-tsi-de of this pac-ka-ge."},
+		{"English words are hyphenated using Greek/Greeklish grammar. Their detection and exclusion has to happen outside of this package.", "En-glish w-ords a-re hyphe-na-ted u-sing Gre-ek/Gre-e-klish gram-mar. Their de-tec-ti-on and exc-lu-si-on has to hap-pen ou-tsi-de of this pac-ka-ge."},
 	}
 
 	for _, test := range tests {
@@ -128,7 +129,7 @@ func TestQuickSynizesis(t *testing.T) {
 	}
 }
 
-// Use no cache.
+// Use rules without caching.
 func TestRules(t *testing.T) {
 	hyphenationOptions := GetDefaultOptions()
 
@@ -150,6 +151,8 @@ func TestRules(t *testing.T) {
 		{"αραχνοΰφαντος", "α-ρα-χνο-ΰ-φα-ντος"},
 		{"αραχνούφαντος", "α-ρα-χνο-ύ-φα-ντος"},
 		{"aidiniwtis", "a-i-di-niw-tis"},
+		{"άνθια", "άν-θια"},
+		{"anthia", "an-thia"},
 	}
 
 	for _, test := range tests {

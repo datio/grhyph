@@ -6,13 +6,14 @@ import (
 	"strings"
 )
 
-// 'h' is put in the punctuation (ignore) group as a fix for the (nth: νθ|ντη), (sth: σθ|στη) issue, when it is
-// ambiguous if it should be processed as a vowel or a consonant.
-const SpeechSoundRe = "(?i)(?P<punctuation>[\\s\\.,\\-–—―\\/'’\":!?;&@«»]|[νnσs][τtj]h+)|(?P<vowels>[ϊϋΐΰ]|[αa][ύυuy]|[εe][ύυuy]|[ηi][ύυuy]|[αa][ίιi]|[εe][ίιi]|[οo][ύυuy]|[οo][ίιi]|[άαa]|[έεe]|[ήηhi]|[ίιi]|[όοo]|[ύυyu]|[ώωwo])|(?P<consonants>(?:[μm][πp]|b)|(?:[γg][κk]|[γg])|[νn][τtj]|[νn]|(?:[τt]h|[θ8])|(?:[δd])|(?:[τtj][ζz]|j)|[ζz]|[τtj][σs]|[σs][τtj]|[βv]|[λl]|[μm]|(?:ks|κs|kσ|[ξx3])|[ρr]|[τt]|[φf]|[χx]|ch|(?:[pπ][σs]|[ψ4])|[πp]|[σsc]|[κk])|(?P<other>.?)"
+// For a less error prone result, 'h' was removed from the vowels group, so that greeklish equivalents of
+// words like "χροι-ά" [khri'a] (where 'h' acts as  a consonant) are hyphenated as hroi-a instead of
+// h-roi-a [iria].
+const SpeechSoundRe = "(?i)(?P<punctuation>[\\s\\.,\\-–—―\\/'’\":!?;&@«»])|(?P<vowels>[ϊϋΐΰ]|[αa][ύυuy]|[εe][ύυuy]|[ηi][ύυuy]|[αa][ίιi]|[εe][ίιi]|[οo][ύυuy]|[οo][ίιi]|[άαa]|[έεe]|[ήηi]|[ίιi]|[όοo]|[ύυyu]|[ώωwo])|(?P<consonants>(?:[μm][πp]|b)|(?:[γg][κk]|[γg])|[νn][τtj]|[νn]|(?:[τt]h+|[θ8])|(?:[δd])|(?:[τtj][ζz]|j)|[ζz]|[τtj][σs]|[σs][τtj]|[βv]|[λl]|[μm]|(?:ks|κs|kσ|[ξx3])|[ρr]|[τt]|[φf]|[χx]|ch|(?:[pπ][σs]|[ψ4])|[πp]|[σsc]|[κk])|(?P<other>.?)"
 
 // Valid Greek word starting consonants.
 // Important: Verify the getWSCRe()'s conditions when altering.
-const WordStartConsonantsRe = "(?i)^([βvb](?:[τt]h|[δdγgλlρr])|[γg](?:[τt]h|[δdκkλlνnρr])|(?:[τt]h|[δd])[νn]|(?:[τt]h|[δd])[ρr]|(?:[τt]h|[θ8])[λlνnρr]|[κk][βvb]|[κk][λlνnρrτtj]|[μm][νnπp]|[νn][τtj][^h]|[πp][λlνnρrτtj]|[πp][φf]|[σs](?:[τt][^hθ8βvbγgκkμmνnπpφfχxh]|[θ8βvbγgκkλlμmνnπpφfχxh])|[τt][ζzμmρrσs]|[φf](?:[τt]h?|[θ8λlρrχxh]|ch)|[φf][κk]|(?:[χxh]|ch)(?:[θ8λlνnρr]|[τt]h?))"
+const WordStartConsonantsRe = "(?i)^([βvb](?:[τt]h|[δdγgλlρr])|[γg](?:[τt]h|[δdκkλlνnρr])|(?:[τt]h|[δd])[νn]|(?:[τt]h|[δd])[ρr]|(?:[τt]h|[θ8])[λlνnρr]|[κk][βvb]|[κk][λlνnρrτtj]|[μm][νnπp]|[νn][τtj][^h]|[πp][λlνnρrτtj]|[πp][φf]|[σs](?:[τt](?:[^hθ8βvbγgκkμmνnπpφfχx]|h)|[θ8βvbγgκkλlμmνnπpφfχxh])|[τt][ζzμmρrσs]|[φf](?:[τt]h?|[θ8λlρrχxh]|ch)|[φf][κk]|(?:[χxh]|ch)(?:[θ8λlνnρr]|[τt]h?))"
 
 type WSCReMapKey struct {
 	CombineConsonantsDn bool
@@ -2620,7 +2621,7 @@ var GrhyphRules = []GrhyphRule{
 
 	// ανθί, άνθι
 	GrhyphRule{customRegexpCompile(
-		[]string{"^", "(α|ά)", "(ν)", "(θ)", "(ι)", "(ια|ιού|ιών)", "$"}), "$1$2$3$4>$5"},
+		[]string{"^", "(α|ά)", "(ν)", "(θ)", "(ι)", "(ια|ιού|ιών)", "$"}), "$1$2-$3$4$5"},
 	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?start=10&lq=*ανθί*&dq=
 
 	// ανθοτύρι, βουλλωτύρι
