@@ -13,7 +13,7 @@ const SpeechSoundRe = "(?i)(?P<punctuation>[\\s\\.,\\-–—―\\/'’\":!?;&@«
 
 // Valid Greek word starting consonants.
 // Important: Verify the getWSCRe()'s conditions when altering.
-const WordStartConsonantsRe = "(?i)^([βvb](?:[τt]h|[δdγgλlρr])|[γg](?:[τt]h|[δdκkλlνnρr])|(?:[τt]h|[δd])[νn]|(?:[τt]h|[δd])[ρr]|(?:[τt]h|[θ8])[λlνnρr]|[κk][βvb]|[κk][λlνnρrτtj]|[μm][νnπp]|[νn][τtj][^h]|[πp][λlνnρrτtj]|[πp][φf]|[σs](?:[τt](?:[^hθ8βvbγgκkμmνnπpφfχx]|h)|[θ8βvbγgκkλlμmνnπpφfχxh])|[τt][ζzμmρrσs]|[φf](?:[τt]h?|[θ8λlρrχxh]|ch)|[φf][κk]|(?:[χxh]|ch)(?:[θ8λlνnρr]|[τt]h?))"
+const WordStartConsonantsRe = "(?i)^([βvb](?:[τt]h|[δdγgλlρr])|[γg](?:[τt]h|[δdκkλlνnρr])|(?:[τt]h|[δd])[νn]|(?:[τt]h|[δd])[ρr]|(?:[τt]h|[θ8])[λlνnρr]|[κk][βvb]|[κk][λlνnρrτtj]|[μm][νnπp]|[νn][τtj][^h]|[πp][λlνnρrτtj]|[πp][φf]|[σs](?:[τt](?:[^hθ8βvbγgκkμmνnπpφfχx]|h)|[θ8βvbγgκkλlμmνnπpφfχxh])|[τt](?:[μm]$|[ζzρrσs])|[φf](?:[τt]h?|[θ8λlρrχxh]|ch)|[φf][κk]|(?:[χxh]|ch)(?:[θ8λlνnρr]|[τt]h?))"
 
 type WSCReMapKey struct {
 	CombineConsonantsDn bool
@@ -998,6 +998,11 @@ var GrhyphRules = []GrhyphRule{
 		[]string{"(.*)", "(α|ά)", "(δ)", "(ει)", "(ος|α|ο)", "$"}), "$1$2$3$4><$5"},
 	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?lq=*δειά*&dq=
 
+	// άδια
+	GrhyphRule{customRegexpCompile(
+		[]string{"^", "(α|ά)", "(δ)", "(ει|ι)", "(ος|α|ο)", "$"}), "$1-$2$3$4"},
+	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?lq=*δειά*&dq=
+
 	// αδειάζω
 	GrhyphRule{customRegexpCompile(
 		[]string{"(.*)", "(α|ά)", "(δ)", "(ει)", "(α|ά)", "(ειάζω)", "(.*)"}), "$1$2$3$4><$5$6$7"},
@@ -1155,7 +1160,7 @@ var GrhyphRules = []GrhyphRule{
 
 	// ακριτομύθεια
 	GrhyphRule{customRegexpCompile(
-		[]string{"(.*)", "(ι)", "(τ)", "(ο)", "(μ)", "(υ|ύ|ι|ί)", "(θ)", "(ει)", "(α|ά|ο|ό|ω|ώ)", "(.*)"}),
+		[]string{"(.*)", "(ι)", "(τ)", "(ο)", "(μ)", "(υ|ύ|ι|ί)", "(θ)", "(ει|ι)", "(α|ά|ο|ό|ω|ώ)", "(.*)"}),
 		"$1$2$3$4$5$6$7$8><$9$10"},
 	// *ιτομύθεια*
 
@@ -1450,7 +1455,7 @@ var GrhyphRules = []GrhyphRule{
 	GrhyphRule{customRegexpCompile(
 		[]string{"(.*)", "(ε)", "(λ)", "(η|ή)", "(σσ|σ)", "(ι)", "(α|ά|ε|έ|ω|ώ)", "(.*)"}), "$1$2$3$4$5$6><$7$8"},
 	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?lq=*ελίσι*&dq=
-	// todo: αμπελοειδή
+	// todo: αμπελοειδή, ανθρωποειδής, αγκιστροειδής, αμφιβληστροειδής (*βλη-στρο-ι-δ*) etc.
 
 	// αμπιγιέ
 	GrhyphRule{customRegexpCompile(
