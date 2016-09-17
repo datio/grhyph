@@ -134,73 +134,73 @@ func (h *Hyphenation) Hyphenate() (string, error) {
 
 var synizesisVowelsRe *regexp.Regexp = regexp.MustCompile(SynizesisVowelsRe)
 
-// Hyphenate without using the GrhyphRules set from the definitions.
+// Hyphenate without using the GrhyphRules (RegExp exceptions) definitions.
 func plainHyphenation(ss []SpeechSound, o Options, wSCRe *regexp.Regexp) (string, error) {
 	if len(ss) <= 1 || len(ss) < o.MinHyphenationLength {
 		return speechSoundJoin(ss), nil
 	}
 
-	var hyphenedBytes []byte
+	var hyphenated []byte
 
 	for i := 0; i < len(ss); i++ {
 		if ss[i].Group == "consonants" && ss[i].ImmediateVowelExists {
-			hyphenedBytes = append(hyphenedBytes, ss[i].Match...)
+			hyphenated = append(hyphenated, ss[i].Match...)
 			continue
 		} else if ss[i].Group == "vowels" {
 			if ss[i].EventualVowelsExist && ss[i].ImmediateConsonants == 1 {
-				hyphenedBytes = append(hyphenedBytes, fmt.Sprintf("%s%s", ss[i].Match, o.Seperator)...)
+				hyphenated = append(hyphenated, fmt.Sprintf("%s%s", ss[i].Match, o.Seperator)...)
 				continue
 			} else if ss[i].ImmediateConsonants >= 1 && !ss[i].EventualVowelsExist {
-				hyphenedBytes = append(hyphenedBytes, ss[i].Match...)
+				hyphenated = append(hyphenated, ss[i].Match...)
 				continue
 			} else if ss[i].EventualVowelsExist && ss[i].ImmediateConsonants > 1 {
 				hyphenedConsonants := consonantHyphenation(i+1, ss[i].ImmediateConsonants, ss, o, wSCRe)
-				hyphenedBytes = append(hyphenedBytes, fmt.Sprintf("%s%s", ss[i].Match, hyphenedConsonants)...)
+				hyphenated = append(hyphenated, fmt.Sprintf("%s%s", ss[i].Match, hyphenedConsonants)...)
 				i += ss[i].ImmediateConsonants
 				continue
 			} else if ss[i].ImmediateVowelExists {
-				// Flag useful for quick end-of-the-line splitting (hyphenation).
+				// Flag for quick-synizesis / end-of-the-line hyphenation.
 				if o.QuickSynizesis &&
 					synizesisVowelsRe.MatchString(fmt.Sprintf("%s%s", ss[i].Match, ss[i+1].Match)) {
-					hyphenedBytes = append(hyphenedBytes, ss[i].Match...)
+					hyphenated = append(hyphenated, ss[i].Match...)
 					continue
 				}
-				hyphenedBytes = append(hyphenedBytes, fmt.Sprintf("%s%s", ss[i].Match, o.Seperator)...)
+				hyphenated = append(hyphenated, fmt.Sprintf("%s%s", ss[i].Match, o.Seperator)...)
 				continue
 			}
 		}
 
-		hyphenedBytes = append(hyphenedBytes, ss[i].Match...)
+		hyphenated = append(hyphenated, ss[i].Match...)
 	}
 
-	return string(hyphenedBytes[:]), nil
+	return string(hyphenated[:]), nil
 }
 
 func consonantHyphenation(startIndex int, consonantsN int,
 	ss []SpeechSound, o Options, wSCRe *regexp.Regexp) string {
-	var hyphenenedConsonants []byte
+	var hyphenatedConsonants []byte
 
 	endIndex := startIndex + consonantsN
 	for i := startIndex; i < endIndex; i++ {
 		if i == endIndex-1 {
-			hyphenenedConsonants = append(hyphenenedConsonants, fmt.Sprintf("%s%s", o.Seperator, ss[i].Match)...)
+			hyphenatedConsonants = append(hyphenatedConsonants, fmt.Sprintf("%s%s", o.Seperator, ss[i].Match)...)
 			break
 		}
 
 		consonantsPair := fmt.Sprintf("%s%s", ss[i].Match, ss[i+1].Match)
 		if wSCRe.MatchString(consonantsPair) {
-			hyphenenedConsonants = append(hyphenenedConsonants, o.Seperator...)
+			hyphenatedConsonants = append(hyphenatedConsonants, o.Seperator...)
 			for ; i < endIndex; i++ {
-				hyphenenedConsonants = append(hyphenenedConsonants, ss[i].Match...)
+				hyphenatedConsonants = append(hyphenatedConsonants, ss[i].Match...)
 			}
 			break
 		} else {
-			hyphenenedConsonants = append(hyphenenedConsonants, ss[i].Match...)
+			hyphenatedConsonants = append(hyphenatedConsonants, ss[i].Match...)
 			continue
 		}
 	}
 
-	return string(hyphenenedConsonants[:])
+	return string(hyphenatedConsonants[:])
 }
 
 func (h *Hyphenation) regexpHyphenation() (string, error) {
@@ -209,10 +209,9 @@ func (h *Hyphenation) regexpHyphenation() (string, error) {
 	}
 
 	var err error
-	var hyphenedBytes []byte
+	var hyphenated []byte
 
-	// Seperate words using speechSounds punctuations.
-	// A bit less complicated than, say, an additional *Regexp based Split would be.
+	// Separate multiple input words by using the speechSound punctuation points.
 	lastPunctuationIndex := -1
 	for i, speechSounds := range h.SpeechSounds {
 		start := lastPunctuationIndex + 1
@@ -222,21 +221,21 @@ func (h *Hyphenation) regexpHyphenation() (string, error) {
 		if speechSounds.Group == "punctuation" {
 			if start >= 0 && i-start > 1 {
 				if (i - start) >= h.Options.MinHyphenationLength {
-					hyphenedBytes = append(hyphenedBytes, regexpReplace(h.SpeechSounds[start:i], h.Options, h.WSCRe)...)
+					hyphenated = append(hyphenated, regexpReplace(h.SpeechSounds[start:i], h.Options, h.WSCRe)...)
 				} else {
-					hyphenedBytes = append(hyphenedBytes, speechSoundJoin(h.SpeechSounds[start:i])...)
+					hyphenated = append(hyphenated, speechSoundJoin(h.SpeechSounds[start:i])...)
 				}
 			} else if start >= 0 && end-start == 0 {
-				hyphenedBytes = append(hyphenedBytes, h.SpeechSounds[start].Match...)
+				hyphenated = append(hyphenated, h.SpeechSounds[start].Match...)
 			}
-			hyphenedBytes = append(hyphenedBytes, h.SpeechSounds[i].Match...)
+			hyphenated = append(hyphenated, h.SpeechSounds[i].Match...)
 			lastPunctuationIndex = i
 		} else if isLastIteration {
-			hyphenedBytes = append(hyphenedBytes, regexpReplace(h.SpeechSounds[start:], h.Options, h.WSCRe)...)
+			hyphenated = append(hyphenated, regexpReplace(h.SpeechSounds[start:], h.Options, h.WSCRe)...)
 		}
 	}
 
-	return string(hyphenedBytes[:]), err
+	return string(hyphenated[:]), err
 }
 
 func speechSoundJoin(speechSounds []SpeechSound) string {

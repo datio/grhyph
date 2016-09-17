@@ -7599,7 +7599,7 @@ var GrhyphRules = []GrhyphRule{
 	// todo: οπάλιο (οπαλι-ο), Μπαλίου (μπαλι-ου)
 
 	GrhyphRule{customRegexpCompile(
-		[]string{"^", "(π)", "(ι)", "(ο)", "$"}), "$1$2$3"},
+		[]string{"^", "(π)", "(ι)", "(ο|ό)", "$"}), "$1$2$3"},
 
 	// ...
 
