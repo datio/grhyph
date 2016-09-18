@@ -12,7 +12,7 @@ type hyphenationTest struct {
 func TestPlain(t *testing.T) {
 	hyphenationOptions := GetDefaultOptions()
 
-	hyphenationOptions.Seperator = "-"
+	hyphenationOptions.Separator = "-"
 
 	h := Hyphenation{
 		Options: hyphenationOptions,
@@ -199,7 +199,7 @@ func TestPlain(t *testing.T) {
 func TestQuickSynizesis(t *testing.T) {
 	hyphenationOptions := GetDefaultOptions()
 
-	hyphenationOptions.Seperator = "/"
+	hyphenationOptions.Separator = "/"
 	hyphenationOptions.QuickSynizesis = true
 
 	h := Hyphenation{
@@ -233,7 +233,7 @@ func TestQuickSynizesis(t *testing.T) {
 func TestRules(t *testing.T) {
 	hyphenationOptions := GetDefaultOptions()
 
-	hyphenationOptions.Seperator = "-"
+	hyphenationOptions.Separator = "-"
 	hyphenationOptions.UseGrhyphRules = true
 
 	h := Hyphenation{
@@ -272,7 +272,7 @@ func TestRules(t *testing.T) {
 func TestQuickSynizesisRules(t *testing.T) {
 	hyphenationOptions := GetDefaultOptions()
 
-	hyphenationOptions.Seperator = "-"
+	hyphenationOptions.Separator = "-"
 	hyphenationOptions.QuickSynizesis = true
 	hyphenationOptions.UseGrhyphRules = true
 
@@ -304,7 +304,7 @@ func TestQuickSynizesisRules(t *testing.T) {
 func TestConsonantCombinations(t *testing.T) {
 	hyphenationOptions := GetDefaultOptions()
 
-	hyphenationOptions.Seperator = "-"
+	hyphenationOptions.Separator = "-"
 	hyphenationOptions.CombineConsonantsDn = true
 	hyphenationOptions.CombineConsonantsKv = true
 	hyphenationOptions.CombineConsonantsPf = true
@@ -339,7 +339,7 @@ func TestConsonantCombinations(t *testing.T) {
 func BenchmarkPlain(b *testing.B) {
 	hyphenationOptions := GetDefaultOptions()
 
-	hyphenationOptions.Seperator = "-"
+	hyphenationOptions.Separator = "-"
 
 	h := Hyphenation{
 		Options: hyphenationOptions,
@@ -363,7 +363,7 @@ func BenchmarkPlain(b *testing.B) {
 func BenchmarkQuickSynizesis(b *testing.B) {
 	hyphenationOptions := GetDefaultOptions()
 
-	hyphenationOptions.Seperator = "-"
+	hyphenationOptions.Separator = "-"
 	hyphenationOptions.QuickSynizesis = true
 
 	h := Hyphenation{
@@ -388,7 +388,7 @@ func BenchmarkQuickSynizesis(b *testing.B) {
 func BenchmarkRules(b *testing.B) {
 	hyphenationOptions := GetDefaultOptions()
 
-	hyphenationOptions.Seperator = "-"
+	hyphenationOptions.Separator = "-"
 	hyphenationOptions.UseGrhyphRules = true
 
 	h := Hyphenation{
@@ -415,7 +415,7 @@ func BenchmarkRules(b *testing.B) {
 func BenchmarkRulesNoCache(b *testing.B) {
 	hyphenationOptions := GetDefaultOptions()
 
-	hyphenationOptions.Seperator = "-"
+	hyphenationOptions.Separator = "-"
 	hyphenationOptions.UseGrhyphRules = true
 
 	h := Hyphenation{

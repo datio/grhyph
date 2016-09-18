@@ -16,7 +16,7 @@ type (
 	}
 
 	Options struct {
-		Seperator            string
+		Separator            string
 		MinHyphenationLength int
 		UseGrhyphRules       bool
 		CombineConsonantsDn  bool
@@ -43,7 +43,7 @@ var Cache = map[CacheKey]string{}
 var CachingEnabled bool = true
 
 var defaultOptions = Options{
-	Seperator:            "/",
+	Separator:            "/",
 	MinHyphenationLength: 2,
 	CombineConsonantsFk:  true,
 }
@@ -148,7 +148,7 @@ func plainHyphenation(ss []SpeechSound, o Options, wSCRe *regexp.Regexp) (string
 			continue
 		} else if ss[i].Group == "vowels" {
 			if ss[i].EventualVowelsExist && ss[i].ImmediateConsonants == 1 {
-				hyphenated = append(hyphenated, fmt.Sprintf("%s%s", ss[i].Match, o.Seperator)...)
+				hyphenated = append(hyphenated, fmt.Sprintf("%s%s", ss[i].Match, o.Separator)...)
 				continue
 			} else if ss[i].ImmediateConsonants >= 1 && !ss[i].EventualVowelsExist {
 				hyphenated = append(hyphenated, ss[i].Match...)
@@ -165,7 +165,7 @@ func plainHyphenation(ss []SpeechSound, o Options, wSCRe *regexp.Regexp) (string
 					hyphenated = append(hyphenated, ss[i].Match...)
 					continue
 				}
-				hyphenated = append(hyphenated, fmt.Sprintf("%s%s", ss[i].Match, o.Seperator)...)
+				hyphenated = append(hyphenated, fmt.Sprintf("%s%s", ss[i].Match, o.Separator)...)
 				continue
 			}
 		}
@@ -183,13 +183,13 @@ func consonantHyphenation(startIndex int, consonantsN int,
 	endIndex := startIndex + consonantsN
 	for i := startIndex; i < endIndex; i++ {
 		if i == endIndex-1 {
-			hyphenatedConsonants = append(hyphenatedConsonants, fmt.Sprintf("%s%s", o.Seperator, ss[i].Match)...)
+			hyphenatedConsonants = append(hyphenatedConsonants, fmt.Sprintf("%s%s", o.Separator, ss[i].Match)...)
 			break
 		}
 
 		consonantsPair := fmt.Sprintf("%s%s", ss[i].Match, ss[i+1].Match)
 		if wSCRe.MatchString(consonantsPair) {
-			hyphenatedConsonants = append(hyphenatedConsonants, o.Seperator...)
+			hyphenatedConsonants = append(hyphenatedConsonants, o.Separator...)
 			for ; i < endIndex; i++ {
 				hyphenatedConsonants = append(hyphenatedConsonants, ss[i].Match...)
 			}
@@ -260,7 +260,7 @@ func regexpReplace(speechSounds []SpeechSound, o Options, wSCRe *regexp.Regexp) 
 
 	for _, rule := range GrhyphRules {
 		if rule.CompiledCustomRe.MatchString(joinedSpeechSounds) {
-			replacement := strings.Replace(rule.Replacement, "-", o.Seperator, -1)
+			replacement := strings.Replace(rule.Replacement, "-", o.Separator, -1)
 
 			var (
 				middleRunes      []byte

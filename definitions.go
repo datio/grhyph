@@ -280,7 +280,7 @@ func customRegexpCompile(grhyphRegexps []string) *regexp.Regexp {
 }
 
 // This list catalogs whole words, or parts of words, for which synizesis is most likely to occur.
-// Rules to seperate vowels may also exist, useful for words where accents/diacritics are missing (e.g. Greeklish).
+// Rules to separate vowels may also exist, useful for words where accents/diacritics are missing (e.g. Greeklish).
 var GrhyphRules = []GrhyphRule{
 	// GrhyphRule{customRegexpCompile([]string{}), ""},
 
