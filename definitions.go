@@ -9,11 +9,11 @@ import (
 // For a less error prone result, 'h' was removed from the vowels group, so that greeklish equivalents of
 // words like "χροι-ά" [khri'a] (where 'h' acts as  a consonant) are hyphenated as hroi-a instead of
 // h-roi-a [iria].
-const SpeechSoundRe = "(?i)(?P<punctuation>[\\s\\.,\\-–—―\\/'’\":!?;&@«»])|(?P<vowels>[ϊϋΐΰ]|[αa][ύυuy]|[εe][ύυuy]|[ηi][ύυuy]|[αa][ίιi]|[εe][ίιi]|[οo][ύυuy]|[οo][ίιi]|[άαa]|[έεe]|[ήηi]|[ίιi]|[όοo]|[ύυyu]|[ώωwo])|(?P<consonants>(?:[μm][πp]|b)|(?:[γg][κk]|[γg])|[νn][τtj]|[νn]|(?:[τt]h+|[θ8])|(?:[δd])|(?:[τtj][ζz]|j)|[ζz]|[τtj][σs]|[σs][τtj]|[βv]|[λl]|[μm]|(?:ks|κs|kσ|[ξx3])|[ρr]|[τt]|[φf]|[χx]|ch|(?:[pπ][σs]|[ψ4])|[πp]|[σsc]|[κk])|(?P<other>.?)"
+const SpeechSoundRe = "(?i)(?P<punctuation>[\\s\\.,\\-–—―\\/'’\":!?;&@«»])|(?P<vowels>[ϊϋΐΰ]|[αa][ύυuy]|[εe][ύυuy]|[ηi][ύυuy]|[αa][ίιi]|[εe][ίιi]|[οo][ύυuy]|[οo][ίιi]|[άαa]|[έεe]|[ήηi]|[ίιi]|[όοo]|[ύυyu]|[ώωwo])|(?P<consonants>(?:[μm][πp]|b)|(?:[γg][κk]|[γg])|[νn][τtj]|[νn]|(?:[τt]h+|[θ8])|(?:[δd])|(?:[τtj][ζz]|j)|[ζz]|[τtj][σsc]|[σsc][τtj]|[βv]|[λl]|[μm]|(?:ks|κs|kσ|[ξx3])|[ρr]|[τt]|[φf]|[χx]|ch|(?:[pπ][σsc]|[ψ4])|[πp]|[σsc]|[κk])|(?P<other>.?)"
 
 // Valid Greek word starting consonants.
 // Important: Verify the getWSCRe()'s conditions when altering.
-const WordStartConsonantsRe = "(?i)^([βvb](?:[τt]h|[δdγgλlρr])|[γg](?:[τt]h|[δdκkλlνnρr])|(?:[τt]h|[δd])[νn]|(?:[τt]h|[δd])[ρr]|(?:[τt]h|[θ8])[λlνnρr]|[κk][βvb]|[κk][λlνnρrj]|[κk][τt]$|[μm][νnπp]|[νn][τtj][^h]|[πp][λlνnρrτtj]|[πp][φf]|[σs](?:[τt](?:[^hθ8βvbγgκkμmνnπpφfχx]|h)|[θ8βvbγgκkλlμmνnπpφfχxh])|[τt](?:[μm]$|[ζzρrσs])|[φf](?:[τt]h?|[θ8λlρrχxh]|ch)|[φf][κk]|(?:[χxh]|ch)(?:[θ8λlνnρr]|[τt]h?))"
+const WordStartConsonantsRe = "(?i)^([βvb](?:[τt]h|[δdγgλlρr])|[γg](?:[τt]h|[δdκkλlνnρr])|(?:[τt]h|[δd])[νn]|(?:[τt]h|[δd])[ρr]|(?:[τt]h|[θ8])[λlνnρr]|[κk][βvb]|[κk][λlνnρrj]|[κk][τt]$|[μm][νnπp]|[νn][τtj][^h]|[πp][λlνnρrτtj]|[πp][φf]|[σsc](?:[τt](?:[^hθ8βvbγgκkμmνnπpφfχx]|h)|[θ8βvbγgκkλlμmνnπpφfχxh])|[τt](?:[μm]$|[ζzρrσsc])|[φf](?:[τt]h?|[θ8λlρrχxh]|ch)|[φf][κk]|(?:[χxh]|ch)(?:[θ8λlνnρr]|[τt]h?))"
 
 type WSCReMapKey struct {
 	CombineConsonantsDn bool

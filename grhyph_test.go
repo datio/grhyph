@@ -179,7 +179,7 @@ func TestPlain(t *testing.T) {
 		{"Μια και δυο. Μία και δύο", "Μι-α και δυ-ο. Μί-α και δύ-ο"},
 		{"χελιδόνια", "χε-λι-δό-νι-α"},
 		{"αηδόνια", "α-η-δό-νι-α"},
-		{"English words are hyphenated using Greek/Greeklish grammar. Their detection and exclusion has to happen outside of this package.", "En-glish w-ords a-re hyphe-na-ted u-sing Gre-ek/Gre-e-klish gram-mar. Their de-tec-ti-on and exc-lu-si-on has to hap-pen ou-tsi-de of this pac-ka-ge."},
+		{"English words are hyphenated using Greek/Greeklish grammar. Their detection and exclusion has to happen outside of this package.", "En-glish w-ords a-re hyphe-na-ted u-sing Gre-ek/Gre-e-klish gram-mar. Their de-te-cti-on and ex-clu-si-on has to hap-pen ou-tsi-de of this pa-cka-ge."},
 	}
 
 	for _, test := range tests {
