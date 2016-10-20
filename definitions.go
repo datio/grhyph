@@ -13,7 +13,7 @@ const SpeechSoundRe = "(?i)(?P<punctuation>[\\s\\.,\\-–—―\\/'’\":!?;&@«
 
 // Valid Greek word starting consonants.
 // Important: Verify the getWSCRe()'s conditions when altering.
-const WordStartConsonantsRe = "(?i)^([βvb](?:[τt]h|[δdγgλlρr])|[γg](?:[τt]h|[δdκkλlνnρr])|(?:[τt]h|[δd])[νn]|(?:[τt]h|[δd])[ρr]|(?:[τt]h|[θ8])[λlνnρr]|[κk][βvb]|[κk][λlνnρrτtj]|[μm][νnπp]|[νn][τtj][^h]|[πp][λlνnρrτtj]|[πp][φf]|[σs](?:[τt](?:[^hθ8βvbγgκkμmνnπpφfχx]|h)|[θ8βvbγgκkλlμmνnπpφfχxh])|[τt](?:[μm]$|[ζzρrσs])|[φf](?:[τt]h?|[θ8λlρrχxh]|ch)|[φf][κk]|(?:[χxh]|ch)(?:[θ8λlνnρr]|[τt]h?))"
+const WordStartConsonantsRe = "(?i)^([βvb](?:[τt]h|[δdγgλlρr])|[γg](?:[τt]h|[δdκkλlνnρr])|(?:[τt]h|[δd])[νn]|(?:[τt]h|[δd])[ρr]|(?:[τt]h|[θ8])[λlνnρr]|[κk][βvb]|[κk][λlνnρrj]|[κk][τt]$|[μm][νnπp]|[νn][τtj][^h]|[πp][λlνnρrτtj]|[πp][φf]|[σs](?:[τt](?:[^hθ8βvbγgκkμmνnπpφfχx]|h)|[θ8βvbγgκkλlμmνnπpφfχxh])|[τt](?:[μm]$|[ζzρrσs])|[φf](?:[τt]h?|[θ8λlρrχxh]|ch)|[φf][κk]|(?:[χxh]|ch)(?:[θ8λlνnρr]|[τt]h?))"
 
 type WSCReMapKey struct {
 	CombineConsonantsDn bool
@@ -350,7 +350,7 @@ var GrhyphRules = []GrhyphRule{
 		[]string{"(.*)", "(π)", "(λ)", "(ο)", "(ι)", "(κ)", "(.*)"}), "$1$2$3$4>-<$5$6$7"},
 	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?start=10&lq=*ΠΛΟΙΚ*&dq=
 
-	//Αζερμπαϊτζάν
+	// Αζερμπαϊτζάν
 	GrhyphRule{customRegexpCompile(
 		[]string{"(.*)", "(μπ)", "(α)", "(ι)", "(τ)", "(.*)"}), "$1$2$3>-<$4$5$6"},
 	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?lq=*μπαϊτ*&dq=
@@ -2009,7 +2009,7 @@ var GrhyphRules = []GrhyphRule{
 		[]string{"(.*)", "(ρ)", "(μ)", "(ε)", "(ξ)", "(ι)", "(α|ά|ε|έ|ω|ώ)", "(.*)"}), "$1$2$3$4$5$6><$7$8"},
 	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?lq=*ρμεξι*&dq=
 
-	//αρνιέμαι
+	// αρνιέμαι
 	GrhyphRule{customRegexpCompile(
 		[]string{"(.*)", "(α)", "(ρ)", "(ν)", "(ι)", "(α|ά|ε|έ|ω|ώ)", "(.*)"}), "$1$2$3$4$5><$6$7"},
 	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?start=0&lq=*αρνι*&dq=15
@@ -2221,7 +2221,7 @@ var GrhyphRules = []GrhyphRule{
 		"$1$2$3$4$5$6$7$8><$9$10"},
 	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?lq=*φροντησι*&dq=
 
-	//υδροξύλιο
+	// υδροξύλιο
 	GrhyphRule{customRegexpCompile(
 		[]string{"(.*)", "(δ)", "(ρ)", "(ο)", "(ξ)", "(υ|ύ|ι|ί)", "(λ)", "(ι)", "(α|ο)", "(.*)"}),
 		"$1$2$3$4$5$6$7$8>-<$9$10"},
@@ -2236,7 +2236,7 @@ var GrhyphRules = []GrhyphRule{
 		[]string{"(.*)", "(α)", "(χ)", "(ι)", "(ο|ό)", "(ν)", "(ι)", "(στος|στη|στο)", "(.*)"}), "$1$2$3$4><$5$6$7$8$9"},
 	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?lq=*αχιόνιστ*&dq=
 
-	//αχλαδιά
+	// αχλαδιά
 	GrhyphRule{customRegexpCompile(
 		[]string{"(.*)", "(α)", "(χ)", "(λ)", "(α|ά)", "(δ)", "(ι)", "(α|ά|ε|έ|ω|ώ)", "(.*)"}), "$1$2$3$4$5$6$7><$8$9"},
 	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?lq=*χλαδι*&dq=
@@ -2789,7 +2789,7 @@ var GrhyphRules = []GrhyphRule{
 		[]string{"(.*)", "(α)", "(ρ)", "(α)", "(π)", "(ι)", "(α|ά|ω|ώ)", "(.*)"}), "$1$2$3$4$5$6><$7$8"},
 	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?lq=*Αραπιά*&dq=
 
-	//αραχνάκι
+	// αραχνάκι
 	GrhyphRule{customRegexpCompile(
 		[]string{"(.*)", "(χ)", "(ν)", "(α|ά)", "(κ)", "(ι)", "(α|ά|ω|ώ)", "(.*)"}), "$1$2$3$4$5$6><$7$8"},
 	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?lq=*χνάκι*&dq=
@@ -2862,7 +2862,7 @@ var GrhyphRules = []GrhyphRule{
 
 	// ασκί
 	GrhyphRule{customRegexpCompile(
-		[]string{"^", "(α)", "(σ)", "(κ)", "(ι)", "(ιά|ιού|ιών)"}), "$1$2$3$4>$5"},
+		[]string{"^", "(α)", "(σ)", "(κ)", "(ι)", "(ιά|ιού|ιών)", "$"}), "$1$2$3$4>$5"},
 	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?lq=*ασκί*&dq=
 
 	// ασπραδάκι
@@ -3449,6 +3449,18 @@ var GrhyphRules = []GrhyphRule{
 	GrhyphRule{customRegexpCompile(
 		[]string{"(.*)", "(β)", "(ο)", "(ι)", "(ος|α|ο 2)", "$"}), "$1$2$3>-$4-$5"},
 	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?lq=*βοιο*&dq=
+
+	// βόηθα
+	GrhyphRule{customRegexpCompile(
+		[]string{"^", "(β)", "(ό)", "(η)", "(θ)", "(α)", "$"}), "$1$2$3-$4$5"},
+
+	// βόηθαγε
+	GrhyphRule{customRegexpCompile(
+		[]string{"^", "(β)", "(ό)", "(η)", "(θ)", "(α)", "(γ)", "(.*)"}), "$1$2$3-<$4$5$6$7"},
+
+	// βόηθησε
+	GrhyphRule{customRegexpCompile(
+		[]string{"^", "(β)", "(ό)", "(η)", "(θ)", "(η)", "(σ)", "(.*)"}), "$1$2$3-<$4$5$6$7"},
 
 	// βοήθεια
 	GrhyphRule{customRegexpCompile(
@@ -4507,7 +4519,7 @@ var GrhyphRules = []GrhyphRule{
 	GrhyphRule{customRegexpCompile(
 		[]string{"(.*)", "(γ)", "(ι)", "(ου|ού)", "(ν)", "(.*)"}), "$1$2$3><$4$5$6"},
 
-	//γιούρια
+	// γιούρια
 	GrhyphRule{customRegexpCompile(
 		[]string{"(.*)", "(γ)", "(ι)", "(ου|ού)", "(ρ)", "(ι)", "(α|ά|ω|ώ)", "(.*)"}), "$1$2$3>$4-$5$6<$7$8"},
 	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?lq=*γιούρι*&dq=
@@ -5171,7 +5183,7 @@ var GrhyphRules = []GrhyphRule{
 		[]string{"(.*)", "(λ)", "(ι)", "(ο)", "(ι)", "(δ)", "(.*)"}), "$1$2$3$4>-<$5$6$7"},
 	//
 
-	//Δαλάι
+	// Δαλάι
 	GrhyphRule{customRegexpCompile(
 		[]string{"(.*)", "(δ)", "(α)", "(λ)", "(α)", "(ι)", "(.*)"}), "$1$2$3$4$5>-<$6$7"},
 	//http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?lq=*δαλάι*&dq=
@@ -6912,7 +6924,7 @@ var GrhyphRules = []GrhyphRule{
 		[]string{"(.*)", "(θ)", "(ρ)", "(ου|ού)", "(μπ)", "(ι)", "(α|ά|ω|ώ)", "(.*)"}), "$1$2$3$4$5$6><$7$8"},
 	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?lq=*θρούμπι*&dq=
 
-	//	θρυψαλιάζω, θρυψάλιασμα
+	// θρυψαλιάζω, θρυψάλιασμα
 	GrhyphRule{customRegexpCompile(
 		[]string{"(.*)", "(ρ)", "(υ|ι)", "(ψ)", "(α|ά)", "(λ)", "(ι)", "(α|ά|ω|ώ)", "(.*)"}), "$1$2$3$4$5$6$7><$8$9"},
 	// http://www.greek-language.gr/greekLang/modern_greek/tools/lexica/search.html?lq=*ρυψαλι*&dq=
