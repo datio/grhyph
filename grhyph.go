@@ -124,9 +124,9 @@ func (h *Hyphenation) Hyphenate() (string, error) {
 		h.Options.CombineConsonantsPf, h.Options.CombineConsonantsFk)
 
 	if !h.Options.UseGrhyphRules {
-		return plainHyphenation(speechSounds, h.Options, h.WSCRe)
+		return plainHyphenation(speechSounds, h.Options, h.WSCRe), nil
 	} else {
-		return h.regexpHyphenation()
+		return h.regexpHyphenation(), nil
 	}
 
 	return "", nil
@@ -135,9 +135,9 @@ func (h *Hyphenation) Hyphenate() (string, error) {
 var synizesisVowelsRe *regexp.Regexp = regexp.MustCompile(SynizesisVowelsRe)
 
 // Hyphenate without using the GrhyphRules (RegExp exceptions) definitions.
-func plainHyphenation(ss []SpeechSound, o Options, wSCRe *regexp.Regexp) (string, error) {
+func plainHyphenation(ss []SpeechSound, o Options, wSCRe *regexp.Regexp) string {
 	if len(ss) <= 1 || len(ss) < o.MinHyphenationLength {
-		return speechSoundJoin(ss), nil
+		return speechSoundJoin(ss)
 	}
 
 	var hyphenated []byte
@@ -173,7 +173,7 @@ func plainHyphenation(ss []SpeechSound, o Options, wSCRe *regexp.Regexp) (string
 		hyphenated = append(hyphenated, ss[i].Match...)
 	}
 
-	return string(hyphenated[:]), nil
+	return string(hyphenated[:])
 }
 
 func consonantHyphenation(startIndex int, consonantsN int,
@@ -203,12 +203,11 @@ func consonantHyphenation(startIndex int, consonantsN int,
 	return string(hyphenatedConsonants[:])
 }
 
-func (h *Hyphenation) regexpHyphenation() (string, error) {
+func (h *Hyphenation) regexpHyphenation() string {
 	if len(h.Input) <= 1 || len(h.Input) < h.Options.MinHyphenationLength {
-		return h.Input, nil
+		return h.Input
 	}
 
-	var err error
 	var hyphenated []byte
 
 	// Separate multiple input words by using the speechSound punctuation points.
@@ -235,7 +234,7 @@ func (h *Hyphenation) regexpHyphenation() (string, error) {
 		}
 	}
 
-	return string(hyphenated[:]), err
+	return string(hyphenated[:])
 }
 
 func speechSoundJoin(speechSounds []SpeechSound) string {
@@ -297,7 +296,7 @@ func regexpReplace(speechSounds []SpeechSound, o Options, wSCRe *regexp.Regexp) 
 		}
 	}
 
-	hyphened, _ := plainHyphenation(speechSounds, o, wSCRe)
+	hyphened := plainHyphenation(speechSounds, o, wSCRe)
 
 	if CachingEnabled {
 		cacheKey := CacheKey{HyphenationInput: joinedSpeechSounds, HyphenationOptions: o}
