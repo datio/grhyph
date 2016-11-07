@@ -308,10 +308,11 @@ func TestConsonantCombinations(t *testing.T) {
 	hyphenationOptions.CombineConsonantsDn = true
 	hyphenationOptions.CombineConsonantsKv = true
 	hyphenationOptions.CombineConsonantsPf = true
+	hyphenationOptions.CombineConsonantsSn = true
 	hyphenationOptions.CombineConsonantsFk = true
 
 	h := Hyphenation{
-		Input:   "adnakvapfafka",
+		Input:   "adnakvapfasnafka",
 		Options: hyphenationOptions,
 	}
 
@@ -320,18 +321,19 @@ func TestConsonantCombinations(t *testing.T) {
 		panic(err)
 	}
 
-	if hyphenedText != "a-dna-kva-pfa-fka" {
+	if hyphenedText != "a-dna-kva-pfa-sna-fka" {
 		t.Error("Incorrect hyphenation when every combination option is set to true.")
 	}
 
 	h.Options.CombineConsonantsDn = false
 	h.Options.CombineConsonantsKv = false
 	h.Options.CombineConsonantsPf = false
+	h.Options.CombineConsonantsSn = false
 	h.Options.CombineConsonantsFk = false
 
 	hyphenedText, _ = h.Hyphenate()
 
-	if hyphenedText != "ad-nak-vap-faf-ka" {
+	if hyphenedText != "ad-nak-vap-fas-naf-ka" {
 		t.Error("Incorrect hyphenation when every combination option is set to false.")
 	}
 }

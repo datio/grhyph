@@ -17,7 +17,7 @@ func main() {
 	separator := flag.String("separator", "­", `The separator to append between syllables.`)
 
 	useGrhyphRules := flag.Bool("use-rules", false, `Match and replace using rules, based on regular expressions,
-	 as defined inside the definitions.go file.`)
+	 as defined in the definitions.go file.`)
 
 	flag.Parse()
 

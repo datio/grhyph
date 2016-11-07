@@ -22,6 +22,7 @@ type (
 		CombineConsonantsDn  bool
 		CombineConsonantsKv  bool
 		CombineConsonantsPf  bool
+		CombineConsonantsSn  bool
 		CombineConsonantsFk  bool
 		QuickSynizesis       bool
 	}
@@ -121,7 +122,7 @@ func (h *Hyphenation) Hyphenate() (string, error) {
 
 	h.SpeechSounds = speechSounds
 	h.WSCRe = GetWSCRe(h.Options.CombineConsonantsDn, h.Options.CombineConsonantsKv,
-		h.Options.CombineConsonantsPf, h.Options.CombineConsonantsFk)
+		h.Options.CombineConsonantsPf, h.Options.CombineConsonantsSn, h.Options.CombineConsonantsFk)
 
 	if !h.Options.UseGrhyphRules {
 		return plainHyphenation(speechSounds, h.Options, h.WSCRe), nil

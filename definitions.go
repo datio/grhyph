@@ -9,24 +9,25 @@ import (
 // For a less error prone result, 'h' was removed from the vowels group, so that greeklish equivalents of
 // words like "χροι-ά" [khri'a] (where 'h' acts as  a consonant) are hyphenated as hroi-a instead of
 // h-roi-a [iria].
-const SpeechSoundRe = "(?i)(?P<punctuation>[\\s\\.,\\-–—―\\/'’\":!?;&@«»])|(?P<vowels>[ϊϋΐΰ]|[αa][ύυuy]|[εe][ύυuy]|[ηi][ύυuy]|[αa][ίιi]|[εe][ίιi]|[οo][ύυuy]|[οo][ίιi]|[άαa]|[έεe]|[ήηi]|[ίιi]|[όοo]|[ύυyu]|[ώωwo])|(?P<consonants>(?:[μm][πp]|b)|(?:[γg][κk]|[γg])|[νn][τtj]|[νn]|(?:[τt]h+|[θ8])|(?:[δd])|(?:[τtj][ζz]|j)|[ζz]|[τtj][σsc]|[σsc][τtj]|[βv]|[λl]|[μm]|(?:ks|κs|kσ|[ξx3])|[ρr]|[τt]|[φf]|[χx]|ch|(?:[pπ][σsc]|[ψ4])|[πp]|[σsc]|[κk])|(?P<other>.?)"
+const SpeechSoundRe = "(?i)(?P<punctuation>[\\s\\.,\\-–—―\\/'’\":!?;&@«»])|(?P<vowels>[ϊϋΐΰ]|[αa][ύυuy]|[εe][ύυuy]|[ηi][ύυuy]|[αa][ίιi]|[εe][ίιi]|[οo][ύυuy]|[οo][ίιi]|[άαa]|[έεe]|[ήηi]|[ίιi]|[όοo]|[ύυyu]|[ώωwo])|(?P<consonants>(?:[μm][πp]|b)|(?:[γg][κk]|[γg])|[νn][τtj]|[νn]|(?:[τt]h+|[θ8])|(?:[δd])|(?:[τtj][ζz]|j)|[ζz]|[τtj][σsc]|[σsc][τtj]|[βv]|[λl]|[μm]|(?:ks|κs|kσ|[ξx3])|[ρr]|[τt]|[φf]|[χx]|ch|(?:[pπ][σsc]|[ψ4])|[πp]|[σsc]|[κkq])|(?P<other>.?)"
 
 // Valid Greek word starting consonants.
 // Important: Verify the getWSCRe()'s conditions when altering.
-const WordStartConsonantsRe = "(?i)^([βvb](?:[τt]h|[δdγgλlρr])|[γg](?:[τt]h|[δdκkλlνnρr])|(?:[τt]h|[δd])[νn]|(?:[τt]h|[δd])[ρr]|(?:[τt]h|[θ8])[λlνnρr]|[κk][βvb]|[κk][λlνnρrj]|[κk][τt]$|[μm][νnπp]|[νn][τtj][^h]|[πp][λlνnρrτtj]|[πp][φf]|[σsc](?:[τt](?:[^hθ8βvbγgκkμmνnπpφfχx]|h)|[θ8βvbγgκkλlμmνnπpφfχxh])|[τt](?:[μm]$|[ζzρrσsc])|[φf](?:[τt]h?|[θ8λlρrχxh]|ch)|[φf][κk]|(?:[χxh]|ch)(?:[θ8λlνnρr]|[τt]h?))"
+const WordStartConsonantsRe = "(?i)^([βvb](?:[τt]h|[δdγgλlρr])|[γg](?:[τt]h|[δdκkqλlνnρr])|(?:[τt]h|[δd])[νn]|(?:[τt]h|[δd])[ρr]|(?:[τt]h|[θ8])[λlνnρr]|[κkq][βvb]|[κkq][λlνnρrj]|[κkq][τt]$|[μm][νnπp]|[νn][τtj][^h]|[πp][λlνnρrτtj]|[πp][φf]|[σsc](?:[τt](?:[^hθ8βvbγgκkqμmνnπpφfχx]|h)|[θ8βvbγgκkqλlμmπpφfχxh])|[σsc][νn]|[τt](?:[μm]$|[ζzρrσsc])|[φf](?:[τt]h?|[θ8λlρrχxh]|ch)|[φf][κkq]|(?:[χxh]|ch)(?:[θ8λlνnρr]|[τt]h?))"
 
 type WSCReMapKey struct {
 	CombineConsonantsDn bool
 	CombineConsonantsKv bool
 	CombineConsonantsPf bool
+	CombineConsonantsSn bool
 	CombineConsonantsFk bool
 }
 
 var WSCReMap = map[*WSCReMapKey]*regexp.Regexp{}
 
 // Get a WordStartConsonantsRe based on the combination options.
-func GetWSCRe(combDn, combKv, combPf, combFk bool) *regexp.Regexp {
-	mapKey := &WSCReMapKey{combDn, combKv, combPf, combFk}
+func GetWSCRe(combDn, combKv, combPf, combSn, combFk bool) *regexp.Regexp {
+	mapKey := &WSCReMapKey{combDn, combKv, combPf, combSn, combFk}
 
 	if _, ok := WSCReMap[mapKey]; ok {
 		return WSCReMap[mapKey]
@@ -37,13 +38,16 @@ func GetWSCRe(combDn, combKv, combPf, combFk bool) *regexp.Regexp {
 			wSCRe = strings.Replace(wSCRe, "|(?:[τt]h|[δd])[νn]", "", 1)
 		}
 		if !combKv {
-			wSCRe = strings.Replace(wSCRe, "|[κk][βvb]", "", 1)
+			wSCRe = strings.Replace(wSCRe, "|[κkq][βvb]", "", 1)
 		}
 		if !combPf {
 			wSCRe = strings.Replace(wSCRe, "|[πp][φf]", "", 1)
 		}
+		if !combSn {
+			wSCRe = strings.Replace(wSCRe, "|[σsc][νn]", "", 1)
+		}
 		if !combFk {
-			wSCRe = strings.Replace(wSCRe, "|[φf][κk]", "", 1)
+			wSCRe = strings.Replace(wSCRe, "|[φf][κkq]", "", 1)
 		}
 
 		WSCReMap[mapKey] = regexp.MustCompile(wSCRe)
